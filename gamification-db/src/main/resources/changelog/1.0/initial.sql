@@ -6,27 +6,48 @@ CREATE EXTENSION "uuid-ossp";
 --changeset nkochnev:create-user-info
 CREATE TABLE user_info
 (
-    id      UUID          PRIMARY KEY,
-    money   INT DEFAULT 0 NOT NULL,
-    role    VARCHAR(50)   NOT NULL
+    id      UUID        DEFAULT uuid_generate_v1()   PRIMARY KEY,
+    money   INT         DEFAULT 0                    NOT NULL,
+    role    VARCHAR(50)                              NOT NULL
 );
 COMMENT ON TABLE  user_info         IS 'Инфо о пользователе';
 COMMENT ON COLUMN user_info.id      IS 'Идентификатор пользователя';
 COMMENT ON COLUMN user_info.role    IS 'Роль пользователя';
 --rollback DROP TABLE user_info
 
+--changeset nkochnev:create-teams
+CREATE TABLE teams
+(
+    id         UUID         DEFAULT uuid_generate_v1()        PRIMARY KEY,
+    name       VARCHAR(50)                                    NOT NULL,
+    team_type  VARCHAR(50)                                    NOT NULL
+);
+COMMENT ON TABLE  user_info         IS 'Инфо о пользователе';
+COMMENT ON COLUMN user_info.id      IS 'Идентификатор пользователя';
+COMMENT ON COLUMN user_info.role    IS 'Роль пользователя';
+--rollback DROP TABLE teams
+
+--changeset nkochnev:create-user-teams
+CREATE TABLE user_teams
+(
+    user_id    UUID    REFERENCES user_info (id) ON DELETE CASCADE,
+    team_id    UUID    REFERENCES teams (id)     ON DELETE CASCADE,
+    PRIMARY KEY (user_id, team_id)
+);
+--rollback DROP TABLE user_teams
+
 --changeset nkochnev:create-items
 CREATE TABLE items
 (
-    id           UUID                     PRIMARY KEY,
-    name         VARCHAR(100)             NOT NULL,
-    description  VARCHAR(255)             NULL,
-    money_price  INT            DEFAULT 0 NOT NULL,
-    nft_price    INT            DEFAULT 0 NOT NULL,
-    created_date TIMESTAMP DEFAULT now()  NOT NULL,
-    created_by   UUID                     NOT NULL,
-    updated_date TIMESTAMP                NOT NULL,
-    updated_by   UUID                     NOT NULL
+    id           UUID           DEFAULT uuid_generate_v1()           PRIMARY KEY,
+    name         VARCHAR(100)                                        NOT NULL,
+    description  VARCHAR(255)                                        NULL,
+    money_price  INT            DEFAULT 0                            NOT NULL,
+    nft_price    INT            DEFAULT 0                            NOT NULL,
+    created_date TIMESTAMP      DEFAULT now()                        NOT NULL,
+    created_by   UUID                                                NOT NULL,
+    updated_date TIMESTAMP                                           NOT NULL,
+    updated_by   UUID                                                NOT NULL
 );
 COMMENT ON TABLE  items              IS 'Предмет в маркетплейс';
 COMMENT ON COLUMN items.id           IS 'Идентификатор предмета';
@@ -43,17 +64,18 @@ COMMENT ON COLUMN items.updated_by   IS 'Кем обновлено';
 --changeset nkochnev:create-operations
 CREATE TABLE operations
 (
-    id                    UUID                     PRIMARY KEY,
-    name                  VARCHAR(100)             NOT NULL,
-    description           VARCHAR(255)             NULL,
-    money_reward          INT            DEFAULT 0 NOT NULL,
-    nft_reward            INT            DEFAULT 0 NOT NULL,
-    role                  VARCHAR(50)              NOT NULL,
+    id                    UUID          DEFAULT uuid_generate_v1()   PRIMARY KEY,
+    name                  VARCHAR(100)                               NOT NULL,
+    description           VARCHAR(255)                               NULL,
+    money_reward          INT           DEFAULT 0                    NOT NULL,
+    nft_reward            INT           DEFAULT 0                    NOT NULL,
+    role                  VARCHAR(50)                                NULL,
     can_be_changed_reward BOOLEAN,
-    created_date          TIMESTAMP DEFAULT now()  NOT NULL,
-    created_by            UUID                     NOT NULL,
-    updated_date          TIMESTAMP                NOT NULL,
-    updated_by            UUID                     NOT NULL
+    operation_type        VARCHAR(50)                                NOT NULL,
+    created_date          TIMESTAMP     DEFAULT now()                NOT NULL,
+    created_by            UUID                                       NOT NULL,
+    updated_date          TIMESTAMP                                  NOT NULL,
+    updated_by            UUID                                       NOT NULL
 );
 COMMENT ON TABLE  operations                         IS 'Операция в маркетплейс';
 COMMENT ON COLUMN operations.id                      IS 'Идентификатор операции';
@@ -72,13 +94,13 @@ COMMENT ON COLUMN operations.updated_by              IS 'Кем обновлен
 --changeset nkochnev:create-transaction_history
 CREATE TABLE transaction_history
 (
-    id                     UUID                     PRIMARY KEY,
-    item_id                UUID             NULL,
-    money                  INT             NULL,
-    nft                    INT            DEFAULT 0 NOT NULL,
-    user_id                INT            DEFAULT 0 NOT NULL,
-    created_date           TIMESTAMP DEFAULT now()  NOT NULL,
-    transaction_initiator  UUID                     NOT NULL
+    id                     UUID           DEFAULT uuid_generate_v1()    PRIMARY KEY,
+    item_id                UUID                                         NULL,
+    money                  INT                                          NULL,
+    nft                    INT            DEFAULT 0                     NULL,
+    user_id                INT            DEFAULT 0                     NOT NULL,
+    created_date           TIMESTAMP      DEFAULT now()                 NOT NULL,
+    transaction_initiator  UUID                                         NOT NULL
 );
 COMMENT ON TABLE  transaction_history                       IS 'Транзакции';
 COMMENT ON COLUMN transaction_history.id                    IS 'Идентификатор транзакции';

@@ -25,6 +25,9 @@ data class Operation(
     @field:Column("nft_reward")
     val nftReward: UUID?,
 
+    @field:Column("operation_type")
+    val operationType: OperationType,
+
     @field:Column("can_be_changed_reward")
     val canBeChangedReward: Boolean = false,
 
