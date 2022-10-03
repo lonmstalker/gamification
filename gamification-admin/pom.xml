@@ -16,10 +16,6 @@
         <!-- GAMIFICATION -->
         <dependency>
             <groupId>io.lonmstalker</groupId>
-            <artifactId>gamification-db</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.lonmstalker</groupId>
             <artifactId>gamification-api</artifactId>
         </dependency>
 

@@ -3,17 +3,20 @@
 -- liquibase formatted sql
 CREATE EXTENSION "uuid-ossp";
 
---changeset nkochnev:create-user-info
-CREATE TABLE user_info
+--changeset nkochnev:create-wallet
+CREATE TABLE wallet
 (
     id      UUID        DEFAULT uuid_generate_v1()   PRIMARY KEY,
     money   INT         DEFAULT 0                    NOT NULL,
+    nft     INT         DEFAULT 0                    NOT NULL,
     role    VARCHAR(50)                              NOT NULL
 );
-COMMENT ON TABLE  user_info         IS 'Инфо о пользователе';
-COMMENT ON COLUMN user_info.id      IS 'Идентификатор пользователя';
-COMMENT ON COLUMN user_info.role    IS 'Роль пользователя';
---rollback DROP TABLE user_info
+COMMENT ON TABLE  wallet         IS 'Кошелек пользователя';
+COMMENT ON COLUMN wallet.id      IS 'Идентификатор кошелька';
+COMMENT ON COLUMN wallet.money   IS 'Денег в монетах';
+COMMENT ON COLUMN wallet.nft     IS 'Денег в сертификатах';
+COMMENT ON COLUMN wallet.role    IS 'Роль пользователя';
+--rollback DROP TABLE wallet
 
 --changeset nkochnev:create-teams
 CREATE TABLE teams
@@ -22,19 +25,19 @@ CREATE TABLE teams
     name       VARCHAR(50)                                    NOT NULL,
     team_type  VARCHAR(50)                                    NOT NULL
 );
-COMMENT ON TABLE  user_info         IS 'Инфо о пользователе';
-COMMENT ON COLUMN user_info.id      IS 'Идентификатор пользователя';
-COMMENT ON COLUMN user_info.role    IS 'Роль пользователя';
+COMMENT ON TABLE  teams              IS 'Инфо о пользователе';
+COMMENT ON COLUMN teams.id           IS 'Идентификатор пользователя';
+COMMENT ON COLUMN teams.team_type    IS 'Роль пользователя';
 --rollback DROP TABLE teams
 
---changeset nkochnev:create-user-teams
-CREATE TABLE user_teams
+--changeset nkochnev:create-wallet_teams
+CREATE TABLE wallet_teams
 (
-    user_id    UUID    REFERENCES user_info (id) ON DELETE CASCADE,
+    wallet_id  UUID    REFERENCES wallet (id)    ON DELETE CASCADE,
     team_id    UUID    REFERENCES teams (id)     ON DELETE CASCADE,
-    PRIMARY KEY (user_id, team_id)
+    PRIMARY KEY (wallet_id, team_id)
 );
---rollback DROP TABLE user_teams
+--rollback DROP TABLE wallet_teams
 
 --changeset nkochnev:create-items
 CREATE TABLE items
@@ -61,8 +64,8 @@ COMMENT ON COLUMN items.updated_date IS 'Дата обновления';
 COMMENT ON COLUMN items.updated_by   IS 'Кем обновлено';
 --rollback DROP TABLE items
 
---changeset nkochnev:create-operations
-CREATE TABLE operations
+--changeset nkochnev:create-actions
+CREATE TABLE actions
 (
     id                    UUID          DEFAULT uuid_generate_v1()   PRIMARY KEY,
     name                  VARCHAR(100)                               NOT NULL,
@@ -77,18 +80,18 @@ CREATE TABLE operations
     updated_date          TIMESTAMP                                  NOT NULL,
     updated_by            UUID                                       NOT NULL
 );
-COMMENT ON TABLE  operations                         IS 'Операция в маркетплейс';
-COMMENT ON COLUMN operations.id                      IS 'Идентификатор операции';
-COMMENT ON COLUMN operations.name                    IS 'Название операции';
-COMMENT ON COLUMN operations.description             IS 'Описание операции';
-COMMENT ON COLUMN operations.money_reward            IS 'Сумма операции в монетах';
-COMMENT ON COLUMN operations.nft_reward              IS 'Сумма операции в сертификатах';
-COMMENT ON COLUMN operations.role                    IS 'Необходимая роль для операции';
-COMMENT ON COLUMN operations.can_be_changed_reward   IS 'Возможность менять награду при награждении';
-COMMENT ON COLUMN operations.created_date            IS 'Дата создания';
-COMMENT ON COLUMN operations.created_by              IS 'Кем создано';
-COMMENT ON COLUMN operations.updated_date            IS 'Дата обновления';
-COMMENT ON COLUMN operations.updated_by              IS 'Кем обновлено';
+COMMENT ON TABLE  actions                         IS 'Действие, за которое награждают';
+COMMENT ON COLUMN actions.id                      IS 'Идентификатор действия';
+COMMENT ON COLUMN actions.name                    IS 'Название операции';
+COMMENT ON COLUMN actions.description             IS 'Описание операции';
+COMMENT ON COLUMN actions.money_reward            IS 'Сумма операции в монетах';
+COMMENT ON COLUMN actions.nft_reward              IS 'Сумма операции в сертификатах';
+COMMENT ON COLUMN actions.role                    IS 'Необходимая роль для операции';
+COMMENT ON COLUMN actions.can_be_changed_reward   IS 'Возможность менять награду при награждении';
+COMMENT ON COLUMN actions.created_date            IS 'Дата создания';
+COMMENT ON COLUMN actions.created_by              IS 'Кем создано';
+COMMENT ON COLUMN actions.updated_date            IS 'Дата обновления';
+COMMENT ON COLUMN actions.updated_by              IS 'Кем обновлено';
 --rollback DROP TABLE operations
 
 --changeset nkochnev:create-transaction_history
@@ -111,3 +114,32 @@ COMMENT ON COLUMN transaction_history.user_id               IS 'На кого п
 COMMENT ON COLUMN transaction_history.created_date          IS 'Дата создания';
 COMMENT ON COLUMN transaction_history.transaction_initiator IS 'Инициатор транзакции';
 --rollback DROP TABLE transaction_history
+
+--changeset nkochnev:create-triggers
+CREATE TABLE triggers
+(
+    id           UUID           DEFAULT uuid_generate_v1()           PRIMARY KEY,
+    name         VARCHAR(100)                                        NOT NULL,
+    user_id      UUID                                                NULL,
+    group_id     UUID                                                NULL,
+    trigger_type VARCHAR(20)                                         NOT NULL,
+    reward_time  VARCHAR(20)                                         NOT NULL,
+    action_id    UUID                                                NOT NULL,
+    created_date TIMESTAMP      DEFAULT now()                        NOT NULL,
+    created_by   UUID                                                NOT NULL,
+    updated_date TIMESTAMP                                           NOT NULL,
+    updated_by   UUID                                                NOT NULL
+);
+COMMENT ON TABLE  triggers              IS 'Триггер';
+COMMENT ON COLUMN triggers.id           IS 'Идентификатор триггера';
+COMMENT ON COLUMN triggers.name         IS 'Название триггера';
+COMMENT ON COLUMN triggers.user_id      IS 'id пользователя';
+COMMENT ON COLUMN triggers.group_id     IS 'id команды';
+COMMENT ON COLUMN triggers.trigger_type IS 'Тип триггера';
+COMMENT ON COLUMN triggers.reward_time  IS 'Время награждения';
+COMMENT ON COLUMN triggers.action_id    IS 'Id действия';
+COMMENT ON COLUMN triggers.created_date IS 'Дата создания';
+COMMENT ON COLUMN triggers.created_by   IS 'Кем создано';
+COMMENT ON COLUMN triggers.updated_date IS 'Дата обновления';
+COMMENT ON COLUMN triggers.updated_by   IS 'Кем обновлено';
+--rollback DROP TABLE triggers

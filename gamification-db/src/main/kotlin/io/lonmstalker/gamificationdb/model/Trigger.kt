@@ -6,30 +6,30 @@ import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
 import java.util.UUID
 
-@Table("operations")
-data class Operation(
+@Table("triggers")
+data class Trigger(
 
     @field:Id
     @field:Column("id")
-    val operationId: UUID?,
+    val triggerId: UUID?,
 
     @field:Column("name")
     val name: String,
 
-    @field:Column("description")
-    val description: String?,
+    @field:Column("user_id")
+    val userId: UUID?,
 
-    @field:Column("money_reward")
-    val moneyReward: Long?,
+    @field:Column("action_id")
+    val actionId: UUID,
 
-    @field:Column("nft_reward")
-    val nftReward: UUID?,
+    @field:Column("group_id")
+    val team: Team?,
 
-    @field:Column("operation_type")
-    val operationType: OperationType,
+    @field:Column("trigger_type")
+    val triggerType: TriggerType = TriggerType.ALL_USERS,
 
-    @field:Column("can_be_changed_reward")
-    val canBeChangedReward: Boolean = false,
+    @field:Column("reward_time")
+    val rewardTime: String = "12:00",
 
     @field:CreatedDate
     @field:Column("created_date")
@@ -47,3 +47,7 @@ data class Operation(
     @field:Column("updated_by")
     val updatedBy: UUID?
 )
+
+enum class TriggerType {
+    ALL_USERS, USERS_GROUP, ONE_USER
+}

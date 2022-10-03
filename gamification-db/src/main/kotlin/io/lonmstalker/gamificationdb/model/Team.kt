@@ -18,3 +18,7 @@ data class Team(
     @field:Column("team_type")
     val teamType: TeamType
 )
+
+enum class TeamType {
+    TEAM, TRIBE
+}

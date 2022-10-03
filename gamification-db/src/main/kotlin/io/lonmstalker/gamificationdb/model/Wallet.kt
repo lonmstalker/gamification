@@ -5,16 +5,23 @@ import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.util.UUID
 
-@Table("user_info")
-data class UserInfo(
+@Table("wallet")
+data class Wallet(
 
     @Id
     @field:Column("id")
     val userId: UUID?,
 
     @field:Column("money")
-    val money: Long,
+    val money: Long = 0,
+
+    @field:Column("nft")
+    val nft: Long = 0,
 
     @field:Column("role")
-    val role: Role = Role.USER
+    val userRole: Role = Role.USER
 )
+
+enum class Role {
+    ADMIN, MANAGER, HR, USER
+}
