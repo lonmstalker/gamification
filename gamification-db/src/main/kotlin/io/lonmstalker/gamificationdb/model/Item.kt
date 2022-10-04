@@ -23,8 +23,11 @@ data class Item(
     @field:Column("description")
     val description: String,
 
-    @field:Column("price")
-    val price: Long,
+    @field:Column("money_price")
+    val moneyPrice: Long,
+
+    @field:Column("nft_price")
+    val nftPrice: Long,
 
     @field:CreatedDate
     @field:Column("created_date")

@@ -1,7 +1,7 @@
 package io.lonmstalker.gamificationapi.controller.admin
 
+import io.lonmstalker.gamificationapi.constants.EndpointConstants
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_TEAM_ENDPOINT
-import io.lonmstalker.gamificationdb.model.Action
 import io.lonmstalker.gamificationdb.model.Team
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -31,7 +31,7 @@ interface TeamController {
     @ApiResponse(
         description = "Обновленная команда",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Action::class))]
+        content = [Content(schema = Schema(implementation = Team::class))]
     )
     fun updateTeam(
         @RequestBody team: Team,
@@ -55,4 +55,13 @@ interface TeamController {
         content = [Content(schema = Schema(implementation = Team::class))]
     )
     fun getOne(@Parameter(description = "Id команды") @PathVariable teamId: String): Mono<Team>
+
+    @DeleteMapping("$ADMIN_TEAM_ENDPOINT{teamId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ApiResponse(
+        description = "Статус удаления",
+        responseCode = "200",
+        content = [Content(schema = Schema(implementation = Boolean::class))]
+    )
+    fun delete(@Parameter(description = "Id команды") @PathVariable teamId: String): Mono<Boolean>
 }

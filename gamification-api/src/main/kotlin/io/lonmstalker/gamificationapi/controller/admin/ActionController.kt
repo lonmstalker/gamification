@@ -34,7 +34,7 @@ interface ActionController {
     )
     fun updateAction(
         @RequestBody action: Action,
-        @Parameter(description = "Id операции") @PathVariable operationId: String
+        @Parameter(description = "Id операции") @PathVariable actionId: String
     ): Mono<Action>
 
     @GetMapping("$ADMIN_OPERATION_ENDPOINT/list")
@@ -46,12 +46,21 @@ interface ActionController {
     )
     fun getAll(): Flux<Action>
 
-    @GetMapping("$ADMIN_OPERATION_ENDPOINT{action}")
+    @GetMapping("$ADMIN_OPERATION_ENDPOINT{actionId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Действие",
         responseCode = "200",
         content = [Content(schema = Schema(implementation = Action::class))]
     )
-    fun getOne(@Parameter(description = "Id действия") @PathVariable action: String): Mono<Action>
+    fun getOne(@Parameter(description = "Id действия") @PathVariable actionId: String): Mono<Action>
+
+    @DeleteMapping("$ADMIN_OPERATION_ENDPOINT{actionId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ApiResponse(
+        description = "Статус удаления",
+        responseCode = "200",
+        content = [Content(schema = Schema(implementation = Boolean::class))]
+    )
+    fun delete(@Parameter(description = "Id действия") @PathVariable actionId: String): Mono<Boolean>
 }

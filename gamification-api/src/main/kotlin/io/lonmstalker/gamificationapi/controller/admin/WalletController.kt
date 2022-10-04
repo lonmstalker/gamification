@@ -45,4 +45,13 @@ interface WalletController {
         content = [Content(schema = Schema(implementation = Wallet::class))]
     )
     fun getOne(@Parameter(description = "Id кошелька") @PathVariable walletId: String): Mono<Wallet>
+
+    @DeleteMapping("$ADMIN_WALLET_ENDPOINT{walletId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ApiResponse(
+        description = "Статус удаления",
+        responseCode = "200",
+        content = [Content(schema = Schema(implementation = Boolean::class))]
+    )
+    fun delete(@Parameter(description = "Id кошелька") @PathVariable walletId: String): Mono<Boolean>
 }
