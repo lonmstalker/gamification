@@ -26,10 +26,10 @@ data class Trigger(
     val team: Team?,
 
     @field:Column("trigger_type")
-    val triggerType: TriggerType = TriggerType.ALL_USERS,
+    val triggerType: String,
 
     @field:Column("reward_time")
-    val rewardTime: String = "12:00",
+    val rewardTime: String,
 
     @field:CreatedDate
     @field:Column("created_date")
@@ -47,7 +47,3 @@ data class Trigger(
     @field:Column("updated_by")
     val updatedBy: UUID?
 )
-
-enum class TriggerType {
-    ALL_USERS, USERS_GROUP, ONE_USER
-}

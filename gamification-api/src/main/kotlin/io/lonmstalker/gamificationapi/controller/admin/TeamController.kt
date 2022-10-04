@@ -1,6 +1,5 @@
 package io.lonmstalker.gamificationapi.controller.admin
 
-import io.lonmstalker.gamificationapi.constants.EndpointConstants
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_TEAM_ENDPOINT
 import io.lonmstalker.gamificationdb.model.Team
 import io.swagger.v3.oas.annotations.Parameter
@@ -21,13 +20,13 @@ interface TeamController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponse(
         description = "Созданная команда",
-        responseCode = "200",
+        responseCode = "201",
         content = [Content(schema = Schema(implementation = Team::class))]
     )
     fun createTeam(@RequestBody team: Team): Mono<Team>
 
     @PutMapping("$ADMIN_TEAM_ENDPOINT/{teamId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленная команда",
         responseCode = "200",
@@ -47,7 +46,7 @@ interface TeamController {
     )
     fun getAll(): Flux<Team>
 
-    @GetMapping("$ADMIN_TEAM_ENDPOINT{teamId}")
+    @GetMapping("$ADMIN_TEAM_ENDPOINT/{teamId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Команда",
@@ -56,11 +55,11 @@ interface TeamController {
     )
     fun getOne(@Parameter(description = "Id команды") @PathVariable teamId: String): Mono<Team>
 
-    @DeleteMapping("$ADMIN_TEAM_ENDPOINT{teamId}")
+    @DeleteMapping("$ADMIN_TEAM_ENDPOINT/{teamId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ApiResponse(
         description = "Статус удаления",
-        responseCode = "200",
+        responseCode = "202",
         content = [Content(schema = Schema(implementation = Boolean::class))]
     )
     fun delete(@Parameter(description = "Id команды") @PathVariable teamId: String): Mono<Boolean>

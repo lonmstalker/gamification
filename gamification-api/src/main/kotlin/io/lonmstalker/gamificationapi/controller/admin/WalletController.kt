@@ -1,6 +1,9 @@
 package io.lonmstalker.gamificationapi.controller.admin
 
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_WALLET_ENDPOINT
+import io.lonmstalker.gamificationapi.dto.Page
+import io.lonmstalker.gamificationapi.dto.PageRq
+import io.lonmstalker.gamificationdb.model.TransactionHistory
 import io.lonmstalker.gamificationdb.model.Wallet
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -17,7 +20,7 @@ import reactor.core.publisher.Mono
 interface WalletController {
 
     @PutMapping("$ADMIN_WALLET_ENDPOINT/{walletId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Кошелек после награждения",
         responseCode = "200",
@@ -37,7 +40,7 @@ interface WalletController {
     )
     fun getAll(): Flux<Wallet>
 
-    @GetMapping("$ADMIN_WALLET_ENDPOINT{walletId}")
+    @GetMapping("$ADMIN_WALLET_ENDPOINT/{walletId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Кошелек",
@@ -46,12 +49,24 @@ interface WalletController {
     )
     fun getOne(@Parameter(description = "Id кошелька") @PathVariable walletId: String): Mono<Wallet>
 
-    @DeleteMapping("$ADMIN_WALLET_ENDPOINT{walletId}")
+    @DeleteMapping("$ADMIN_WALLET_ENDPOINT/{walletId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ApiResponse(
         description = "Статус удаления",
-        responseCode = "200",
+        responseCode = "202",
         content = [Content(schema = Schema(implementation = Boolean::class))]
     )
     fun delete(@Parameter(description = "Id кошелька") @PathVariable walletId: String): Mono<Boolean>
+
+    @GetMapping(value = ["$ADMIN_WALLET_ENDPOINT/{walletId}", ADMIN_WALLET_ENDPOINT])
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponse(
+        description = "История транзакций",
+        responseCode = "200",
+        content = [Content(schema = Schema(implementation = Page::class))]
+    )
+    fun getHistory(
+        @RequestParam(required = false) pageRq: PageRq?,
+        @Parameter(description = "Id кошелька") @PathVariable(required = false) walletId: String?
+    ): Mono<Page<TransactionHistory>>
 }

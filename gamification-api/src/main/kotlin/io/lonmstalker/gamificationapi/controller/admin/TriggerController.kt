@@ -20,13 +20,13 @@ interface TriggerController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponse(
         description = "Созданный триггер",
-        responseCode = "200",
+        responseCode = "201",
         content = [Content(schema = Schema(implementation = Trigger::class))]
     )
     fun createTrigger(@RequestBody trigger: Trigger): Mono<Trigger>
 
     @PutMapping("$ADMIN_TRIGGER_ENDPOINT/{triggerId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленный триггер",
         responseCode = "200",
@@ -46,7 +46,7 @@ interface TriggerController {
     )
     fun getAll(): Flux<Trigger>
 
-    @GetMapping("$ADMIN_TRIGGER_ENDPOINT{triggerId}")
+    @GetMapping("$ADMIN_TRIGGER_ENDPOINT/{triggerId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Триггер",
@@ -55,11 +55,11 @@ interface TriggerController {
     )
     fun getOne(@Parameter(description = "Id триггера") @PathVariable triggerId: String): Mono<Trigger>
 
-    @DeleteMapping("$ADMIN_TRIGGER_ENDPOINT{triggerId}")
+    @DeleteMapping("$ADMIN_TRIGGER_ENDPOINT/{triggerId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ApiResponse(
         description = "Статус удаления",
-        responseCode = "200",
+        responseCode = "202",
         content = [Content(schema = Schema(implementation = Boolean::class))]
     )
     fun delete(@Parameter(description = "Id команды") @PathVariable triggerId: String): Mono<Boolean>

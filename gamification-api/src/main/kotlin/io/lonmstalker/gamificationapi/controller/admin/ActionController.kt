@@ -20,13 +20,13 @@ interface ActionController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponse(
         description = "Созданное действие",
-        responseCode = "200",
+        responseCode = "201",
         content = [Content(schema = Schema(implementation = Action::class))]
     )
     fun createAction(@RequestBody action: Action): Mono<Action>
 
     @PutMapping("$ADMIN_OPERATION_ENDPOINT/{actionId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленная операция",
         responseCode = "200",
@@ -46,7 +46,7 @@ interface ActionController {
     )
     fun getAll(): Flux<Action>
 
-    @GetMapping("$ADMIN_OPERATION_ENDPOINT{actionId}")
+    @GetMapping("$ADMIN_OPERATION_ENDPOINT/{actionId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Действие",
@@ -55,11 +55,11 @@ interface ActionController {
     )
     fun getOne(@Parameter(description = "Id действия") @PathVariable actionId: String): Mono<Action>
 
-    @DeleteMapping("$ADMIN_OPERATION_ENDPOINT{actionId}")
+    @DeleteMapping("$ADMIN_OPERATION_ENDPOINT/{actionId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ApiResponse(
         description = "Статус удаления",
-        responseCode = "200",
+        responseCode = "202",
         content = [Content(schema = Schema(implementation = Boolean::class))]
     )
     fun delete(@Parameter(description = "Id действия") @PathVariable actionId: String): Mono<Boolean>

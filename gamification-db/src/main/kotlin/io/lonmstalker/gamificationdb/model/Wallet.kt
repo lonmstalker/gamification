@@ -19,9 +19,5 @@ data class Wallet(
     val nft: Long = 0,
 
     @field:Column("role")
-    val userRole: Role = Role.USER
+    val userRole: String
 )
-
-enum class Role {
-    ADMIN, MANAGER, HR, USER
-}

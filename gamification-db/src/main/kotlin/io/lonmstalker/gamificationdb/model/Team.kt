@@ -16,9 +16,5 @@ data class Team(
     val name: String,
 
     @field:Column("team_type")
-    val teamType: TeamType
+    val teamType: String
 )
-
-enum class TeamType {
-    TEAM, TRIBE
-}

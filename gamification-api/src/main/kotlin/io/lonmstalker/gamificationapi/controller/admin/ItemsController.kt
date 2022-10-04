@@ -20,13 +20,13 @@ interface ItemsController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponse(
         description = "Созданный предмет",
-        responseCode = "200",
+        responseCode = "201",
         content = [Content(schema = Schema(implementation = Item::class))]
     )
     fun createItem(@RequestBody item: Item): Mono<Item>
 
     @PutMapping("$ADMIN_ITEMS_ENDPOINT/{itemId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленный предмет",
         responseCode = "200",
@@ -40,13 +40,13 @@ interface ItemsController {
     @GetMapping("$ADMIN_ITEMS_ENDPOINT/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
-        description = "Список команд",
+        description = "Список предметов",
         responseCode = "200",
         content = [Content(array = ArraySchema(schema = Schema(implementation = Item::class)))]
     )
     fun getAll(): Flux<Item>
 
-    @GetMapping("$ADMIN_ITEMS_ENDPOINT{itemId}")
+    @GetMapping("$ADMIN_ITEMS_ENDPOINT/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Предмет",
@@ -55,11 +55,11 @@ interface ItemsController {
     )
     fun getOne(@Parameter(description = "Id предмета") @PathVariable itemId: String): Mono<Item>
 
-    @DeleteMapping("$ADMIN_ITEMS_ENDPOINT{itemId}")
+    @DeleteMapping("$ADMIN_ITEMS_ENDPOINT/{itemId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ApiResponse(
         description = "Статус удаления",
-        responseCode = "200",
+        responseCode = "202",
         content = [Content(schema = Schema(implementation = Boolean::class))]
     )
     fun delete(@Parameter(description = "Id предмета") @PathVariable itemId: String): Mono<Boolean>
