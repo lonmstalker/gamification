@@ -3,8 +3,8 @@ package io.lonmstalker.gamificationapi.controller.admin
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_WALLET_ENDPOINT
 import io.lonmstalker.gamificationapi.dto.Page
 import io.lonmstalker.gamificationapi.dto.PageRq
-import io.lonmstalker.gamificationdb.model.TransactionHistory
-import io.lonmstalker.gamificationdb.model.Wallet
+import io.lonmstalker.gamificationapi.dto.TransactionHistoryDto
+import io.lonmstalker.gamificationapi.dto.WalletDto
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -24,30 +24,30 @@ interface WalletController {
     @ApiResponse(
         description = "Кошелек после награждения",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Wallet::class))]
+        content = [Content(schema = Schema(implementation = WalletDto::class))]
     )
     fun reward(
         @Parameter(description = "Id действия, за которое награждают") @RequestParam operationId: String,
         @Parameter(description = "Id кошелька") @PathVariable walletId: String
-    ): Mono<Wallet>
+    ): Mono<WalletDto>
 
     @GetMapping("$ADMIN_WALLET_ENDPOINT/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Список кошельков",
         responseCode = "200",
-        content = [Content(array = ArraySchema(schema = Schema(implementation = Wallet::class)))]
+        content = [Content(array = ArraySchema(schema = Schema(implementation = WalletDto::class)))]
     )
-    fun getAll(): Flux<Wallet>
+    fun getAll(): Flux<WalletDto>
 
     @GetMapping("$ADMIN_WALLET_ENDPOINT/{walletId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Кошелек",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Wallet::class))]
+        content = [Content(schema = Schema(implementation = WalletDto::class))]
     )
-    fun getOne(@Parameter(description = "Id кошелька") @PathVariable walletId: String): Mono<Wallet>
+    fun getOne(@Parameter(description = "Id кошелька") @PathVariable walletId: String): Mono<WalletDto>
 
     @DeleteMapping("$ADMIN_WALLET_ENDPOINT/{walletId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -68,5 +68,5 @@ interface WalletController {
     fun getHistory(
         @RequestParam(required = false) pageRq: PageRq?,
         @Parameter(description = "Id кошелька") @PathVariable(required = false) walletId: String?
-    ): Mono<Page<TransactionHistory>>
+    ): Mono<Page<TransactionHistoryDto>>
 }

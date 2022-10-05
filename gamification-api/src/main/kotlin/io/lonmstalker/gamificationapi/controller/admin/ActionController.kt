@@ -1,7 +1,9 @@
 package io.lonmstalker.gamificationapi.controller.admin
 
+import com.fasterxml.jackson.annotation.JsonView
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_OPERATION_ENDPOINT
-import io.lonmstalker.gamificationdb.model.Action
+import io.lonmstalker.gamificationapi.constants.Views
+import io.lonmstalker.gamificationapi.dto.ActionDto
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -16,44 +18,48 @@ import reactor.core.publisher.Mono
 @Tag(name = "Контроллер операций", description = "Контроллер для управления действиями")
 interface ActionController {
 
+    @JsonView(Views.Admin::class)
     @PostMapping(ADMIN_OPERATION_ENDPOINT)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponse(
         description = "Созданное действие",
         responseCode = "201",
-        content = [Content(schema = Schema(implementation = Action::class))]
+        content = [Content(schema = Schema(implementation = ActionDto::class))]
     )
-    fun createAction(@RequestBody action: Action): Mono<Action>
+    fun createAction(@RequestBody action: ActionDto): Mono<ActionDto>
 
+    @JsonView(Views.Admin::class)
     @PutMapping("$ADMIN_OPERATION_ENDPOINT/{actionId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленная операция",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Action::class))]
+        content = [Content(schema = Schema(implementation = ActionDto::class))]
     )
     fun updateAction(
-        @RequestBody action: Action,
+        @RequestBody action: ActionDto,
         @Parameter(description = "Id операции") @PathVariable actionId: String
-    ): Mono<Action>
+    ): Mono<ActionDto>
 
+    @JsonView(Views.Admin::class)
     @GetMapping("$ADMIN_OPERATION_ENDPOINT/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Список действий",
         responseCode = "200",
-        content = [Content(array = ArraySchema(schema = Schema(implementation = Action::class)))]
+        content = [Content(array = ArraySchema(schema = Schema(implementation = ActionDto::class)))]
     )
-    fun getAll(): Flux<Action>
+    fun getAll(): Flux<ActionDto>
 
+    @JsonView(Views.Admin::class)
     @GetMapping("$ADMIN_OPERATION_ENDPOINT/{actionId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Действие",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Action::class))]
+        content = [Content(schema = Schema(implementation = ActionDto::class))]
     )
-    fun getOne(@Parameter(description = "Id действия") @PathVariable actionId: String): Mono<Action>
+    fun getOne(@Parameter(description = "Id действия") @PathVariable actionId: String): Mono<ActionDto>
 
     @DeleteMapping("$ADMIN_OPERATION_ENDPOINT/{actionId}")
     @ResponseStatus(HttpStatus.ACCEPTED)

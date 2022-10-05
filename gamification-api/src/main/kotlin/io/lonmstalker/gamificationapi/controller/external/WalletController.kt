@@ -1,11 +1,7 @@
 package io.lonmstalker.gamificationapi.controller.external
 
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.WALLET_ENDPOINT
-import io.lonmstalker.gamificationapi.dto.Page
-import io.lonmstalker.gamificationapi.dto.PageRq
-import io.lonmstalker.gamificationdb.model.TeamType
-import io.lonmstalker.gamificationdb.model.TransactionHistory
-import io.lonmstalker.gamificationdb.model.Wallet
+import io.lonmstalker.gamificationapi.dto.*
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -26,9 +22,9 @@ interface WalletController {
     @ApiResponse(
         description = "Кошелек текущего пользователя",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Wallet::class))]
+        content = [Content(schema = Schema(implementation = WalletDto::class))]
     )
-    fun getCurrentWallet(): Mono<Wallet>
+    fun getCurrentWallet(): Mono<WalletDto>
 
     @GetMapping("$WALLET_ENDPOINT/{teamType}")
     @ResponseStatus(HttpStatus.OK)
@@ -40,23 +36,23 @@ interface WalletController {
     fun getTeamWallets(
         @Parameter(description = "Тип команды") @PathVariable teamType: TeamType,
         @RequestParam(required = false) pageRq: PageRq?
-    ): Mono<Page<Wallet>>
+    ): Mono<Page<WalletDto>>
 
-    @GetMapping(WALLET_ENDPOINT)
+    @GetMapping("$WALLET_ENDPOINT/top")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Топ кошельков коллег",
         responseCode = "200",
         content = [Content(schema = Schema(implementation = Page::class))]
     )
-    fun getTopWallets(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<Wallet>>
+    fun getTopWallets(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<WalletDto>>
 
-    @GetMapping(WALLET_ENDPOINT)
+    @GetMapping("$WALLET_ENDPOINT/history")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "История транзакций",
         responseCode = "200",
         content = [Content(schema = Schema(implementation = Page::class))]
     )
-    fun getCurrentHistory(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<TransactionHistory>>
+    fun getCurrentHistory(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<TransactionHistoryDto>>
 }

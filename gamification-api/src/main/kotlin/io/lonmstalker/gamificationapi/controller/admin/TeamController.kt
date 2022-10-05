@@ -1,7 +1,7 @@
 package io.lonmstalker.gamificationapi.controller.admin
 
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_TEAM_ENDPOINT
-import io.lonmstalker.gamificationdb.model.Team
+import io.lonmstalker.gamificationapi.dto.TeamDto
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -21,39 +21,39 @@ interface TeamController {
     @ApiResponse(
         description = "Созданная команда",
         responseCode = "201",
-        content = [Content(schema = Schema(implementation = Team::class))]
+        content = [Content(schema = Schema(implementation = TeamDto::class))]
     )
-    fun createTeam(@RequestBody team: Team): Mono<Team>
+    fun createTeam(@RequestBody team: TeamDto): Mono<TeamDto>
 
     @PutMapping("$ADMIN_TEAM_ENDPOINT/{teamId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленная команда",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Team::class))]
+        content = [Content(schema = Schema(implementation = TeamDto::class))]
     )
     fun updateTeam(
-        @RequestBody team: Team,
+        @RequestBody team: TeamDto,
         @Parameter(description = "Id команды") @PathVariable teamId: String
-    ): Mono<Team>
+    ): Mono<TeamDto>
 
     @GetMapping("$ADMIN_TEAM_ENDPOINT/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Список команд",
         responseCode = "200",
-        content = [Content(array = ArraySchema(schema = Schema(implementation = Team::class)))]
+        content = [Content(array = ArraySchema(schema = Schema(implementation = TeamDto::class)))]
     )
-    fun getAll(): Flux<Team>
+    fun getAll(): Flux<TeamDto>
 
     @GetMapping("$ADMIN_TEAM_ENDPOINT/{teamId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Команда",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Team::class))]
+        content = [Content(schema = Schema(implementation = TeamDto::class))]
     )
-    fun getOne(@Parameter(description = "Id команды") @PathVariable teamId: String): Mono<Team>
+    fun getOne(@Parameter(description = "Id команды") @PathVariable teamId: String): Mono<TeamDto>
 
     @DeleteMapping("$ADMIN_TEAM_ENDPOINT/{teamId}")
     @ResponseStatus(HttpStatus.ACCEPTED)

@@ -1,7 +1,9 @@
 package io.lonmstalker.gamificationapi.controller.admin
 
+import com.fasterxml.jackson.annotation.JsonView
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_ITEMS_ENDPOINT
-import io.lonmstalker.gamificationdb.model.Item
+import io.lonmstalker.gamificationapi.constants.Views
+import io.lonmstalker.gamificationapi.dto.ItemDto
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -16,44 +18,48 @@ import reactor.core.publisher.Mono
 @Tag(name = "Контроллер предметов", description = "Контроллер для управления предметами")
 interface ItemsController {
 
+    @JsonView(Views.Admin::class)
     @PostMapping(ADMIN_ITEMS_ENDPOINT)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponse(
         description = "Созданный предмет",
         responseCode = "201",
-        content = [Content(schema = Schema(implementation = Item::class))]
+        content = [Content(schema = Schema(implementation = ItemDto::class))]
     )
-    fun createItem(@RequestBody item: Item): Mono<Item>
+    fun createItem(@RequestBody item: ItemDto): Mono<ItemDto>
 
+    @JsonView(Views.Admin::class)
     @PutMapping("$ADMIN_ITEMS_ENDPOINT/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленный предмет",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Item::class))]
+        content = [Content(schema = Schema(implementation = ItemDto::class))]
     )
     fun updateItem(
-        @RequestBody item: Item,
+        @RequestBody item: ItemDto,
         @Parameter(description = "Id предмета") @PathVariable itemId: String
-    ): Mono<Item>
+    ): Mono<ItemDto>
 
+    @JsonView(Views.Admin::class)
     @GetMapping("$ADMIN_ITEMS_ENDPOINT/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Список предметов",
         responseCode = "200",
-        content = [Content(array = ArraySchema(schema = Schema(implementation = Item::class)))]
+        content = [Content(array = ArraySchema(schema = Schema(implementation = ItemDto::class)))]
     )
-    fun getAll(): Flux<Item>
+    fun getAll(): Flux<ItemDto>
 
+    @JsonView(Views.Admin::class)
     @GetMapping("$ADMIN_ITEMS_ENDPOINT/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Предмет",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Item::class))]
+        content = [Content(schema = Schema(implementation = ItemDto::class))]
     )
-    fun getOne(@Parameter(description = "Id предмета") @PathVariable itemId: String): Mono<Item>
+    fun getOne(@Parameter(description = "Id предмета") @PathVariable itemId: String): Mono<ItemDto>
 
     @DeleteMapping("$ADMIN_ITEMS_ENDPOINT/{itemId}")
     @ResponseStatus(HttpStatus.ACCEPTED)

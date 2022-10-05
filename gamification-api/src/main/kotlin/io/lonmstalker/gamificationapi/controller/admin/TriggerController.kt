@@ -1,7 +1,7 @@
 package io.lonmstalker.gamificationapi.controller.admin
 
 import io.lonmstalker.gamificationapi.constants.EndpointConstants.ADMIN_TRIGGER_ENDPOINT
-import io.lonmstalker.gamificationdb.model.Trigger
+import io.lonmstalker.gamificationapi.dto.TriggerDto
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
@@ -21,39 +21,39 @@ interface TriggerController {
     @ApiResponse(
         description = "Созданный триггер",
         responseCode = "201",
-        content = [Content(schema = Schema(implementation = Trigger::class))]
+        content = [Content(schema = Schema(implementation = TriggerDto::class))]
     )
-    fun createTrigger(@RequestBody trigger: Trigger): Mono<Trigger>
+    fun createTrigger(@RequestBody trigger: TriggerDto): Mono<TriggerDto>
 
     @PutMapping("$ADMIN_TRIGGER_ENDPOINT/{triggerId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Обновленный триггер",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Trigger::class))]
+        content = [Content(schema = Schema(implementation = TriggerDto::class))]
     )
     fun updateTrigger(
-        @RequestBody trigger: Trigger,
+        @RequestBody trigger: TriggerDto,
         @Parameter(description = "Id триггера") @PathVariable triggerId: String
-    ): Mono<Trigger>
+    ): Mono<TriggerDto>
 
     @GetMapping("$ADMIN_TRIGGER_ENDPOINT/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Список триггеров",
         responseCode = "200",
-        content = [Content(array = ArraySchema(schema = Schema(implementation = Trigger::class)))]
+        content = [Content(array = ArraySchema(schema = Schema(implementation = TriggerDto::class)))]
     )
-    fun getAll(): Flux<Trigger>
+    fun getAll(): Flux<TriggerDto>
 
     @GetMapping("$ADMIN_TRIGGER_ENDPOINT/{triggerId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Триггер",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Trigger::class))]
+        content = [Content(schema = Schema(implementation = TriggerDto::class))]
     )
-    fun getOne(@Parameter(description = "Id триггера") @PathVariable triggerId: String): Mono<Trigger>
+    fun getOne(@Parameter(description = "Id триггера") @PathVariable triggerId: String): Mono<TriggerDto>
 
     @DeleteMapping("$ADMIN_TRIGGER_ENDPOINT/{triggerId}")
     @ResponseStatus(HttpStatus.ACCEPTED)

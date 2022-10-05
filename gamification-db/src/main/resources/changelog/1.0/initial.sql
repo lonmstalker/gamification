@@ -1,4 +1,4 @@
---prerequisites: создана бд gamifiication
+--prerequisites: создана бд game
 
 -- liquibase formatted sql
 CREATE EXTENSION "uuid-ossp";

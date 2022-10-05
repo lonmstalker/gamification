@@ -1,13 +1,14 @@
 package io.lonmstalker.gamificationapi.dto
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.data.annotation.*
-import org.springframework.data.relational.core.mapping.Column
-import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
 data class TriggerDto @JsonCreator constructor(
 
     @field:Schema(description = "Id триггера")

@@ -14,12 +14,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.lonmstalker</groupId>
-            <artifactId>gamification-db</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
