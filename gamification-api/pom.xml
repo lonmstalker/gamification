@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>gamification-api</artifactId>
-    <version>${parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <dependencies>
         <dependency>

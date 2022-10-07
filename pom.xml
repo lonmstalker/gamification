@@ -23,6 +23,7 @@
         <module>gamification-api</module>
         <module>gamification-db</module>
         <module>gamification-impl</module>
+        <module>gamification-common</module>
     </modules>
 
     <properties>
@@ -47,6 +48,11 @@
             <dependency>
                 <groupId>io.lonmstalker</groupId>
                 <artifactId>gamification-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.lonmstalker</groupId>
+                <artifactId>gamification-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
