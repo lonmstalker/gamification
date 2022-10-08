@@ -1,5 +1,6 @@
 package io.lonmstalker.gamification.gateway.impl
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.lonmstalker.gamification.client.WalletClient
 import io.lonmstalker.gamification.constants.Errors.ERROR_CREATE_WALLET
 import io.lonmstalker.gamification.constants.Errors.ERROR_CREATE_WALLET_LOG
@@ -21,7 +22,8 @@ import reactor.core.publisher.Mono
  */
 @Component
 class WalletGatewayImpl(
-    private val walletClient: WalletClient
+    private val walletClient: WalletClient,
+    private val objectMapper: ObjectMapper
 ) : WalletGateway {
 
     override fun createWallet(): Mono<WalletRpDto> = this.walletClient.createWallet()

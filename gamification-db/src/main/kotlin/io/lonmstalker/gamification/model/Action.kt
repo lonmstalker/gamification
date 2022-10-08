@@ -31,6 +31,9 @@ data class Action(
     @field:Column("nft")
     val nft: Int?,
 
+    @field:Column("visible")
+    val visible: Boolean = false,
+
     @field:Column("operation_type")
     val operationType: String,
 

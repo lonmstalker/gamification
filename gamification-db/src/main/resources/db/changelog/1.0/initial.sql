@@ -9,9 +9,6 @@ CREATE EXTENSION "uuid-ossp";
 CREATE TABLE wallet
 (
     wallet_id    UUID       DEFAULT uuid_generate_v1()   PRIMARY KEY,
-    nft          JSONB                                    NULL,
-    coins        DECIMAL    DEFAULT 0                     NOT NULL,
-    matic        DECIMAL    DEFAULT 0                     NOT NULL,
     role         VARCHAR(50)                              NOT NULL,
     first_name   VARCHAR(100)                             NOT NULL,
     last_name    VARCHAR(100)                             NULL,
@@ -24,9 +21,6 @@ CREATE TABLE wallet
 );
 COMMENT ON TABLE  wallet              IS 'Кошелек пользователя';
 COMMENT ON COLUMN wallet.wallet_id    IS 'Идентификатор кошелька';
-COMMENT ON COLUMN wallet.coins        IS 'Денег в монетах';
-COMMENT ON COLUMN wallet.nft          IS 'NFT сертификаты';
-COMMENT ON COLUMN wallet.matic        IS 'Денег в MATIC';
 COMMENT ON COLUMN wallet.role         IS 'Роль пользователя';
 COMMENT ON COLUMN wallet.first_name   IS 'Имя пользователя';
 COMMENT ON COLUMN wallet.last_name    IS 'Фамилия пользователя';
@@ -90,7 +84,7 @@ COMMENT ON COLUMN items.updated_by   IS 'Кем обновлено';
 CREATE TABLE actions
 (
     action_id             UUID          DEFAULT uuid_generate_v1()   PRIMARY KEY,
-    name                  VARCHAR(100)                               NOT NULL,
+    name                  VARCHAR(100)  UNIQUE                       NOT NULL,
     description           VARCHAR(255)                               NULL,
     coins                 DECIMAL       DEFAULT 0                    NULL,
     matic                 DECIMAL       DEFAULT 0                    NULL,
@@ -125,12 +119,14 @@ CREATE TABLE transaction_history
 (
     transaction_id         UUID           DEFAULT uuid_generate_v1()    PRIMARY KEY,
     item_id                UUID                                         NULL,
+    action_id              UUID                                         NOT NULL,
     hash                   VARCHAR(100)                                 NOT NULL,
     description            VARCHAR(255)                                 NULL,
+    status                 VARCHAR(50)                                  NULL,
     coins                  DECIMAL        DEFAULT 0                     NULL,
     matic                  DECIMAL        DEFAULT 0                     NULL,
-    nft                    INT            DEFAULT 0                     NULL,
-    user_id                INT            DEFAULT 0                     NOT NULL,
+    token_id               INT            DEFAULT 0                     NULL,
+    wallet_id              UUID                                         NOT NULL,
     created_date           TIMESTAMP      DEFAULT now()                 NOT NULL,
     transaction_initiator  UUID                                         NOT NULL
 );
@@ -138,11 +134,13 @@ COMMENT ON TABLE  transaction_history                       IS 'Транзакц
 COMMENT ON COLUMN transaction_history.transaction_id        IS 'Идентификатор транзакции';
 COMMENT ON COLUMN transaction_history.item_id               IS 'В случае обмена id предмета';
 COMMENT ON COLUMN transaction_history.hash                  IS 'Хеш транзакции в блокчейне';
+COMMENT ON COLUMN transaction_history.status                IS 'Статус транзакции в блокчейне, если null - не выполнена еще';
 COMMENT ON COLUMN transaction_history.description           IS 'Пояснение транзакции, если необходимо';
 COMMENT ON COLUMN transaction_history.coins                 IS 'Сумма в монетах';
 COMMENT ON COLUMN transaction_history.matic                 IS 'Сумма в MATIC';
-COMMENT ON COLUMN transaction_history.nft                   IS 'Сумма в nft';
-COMMENT ON COLUMN transaction_history.user_id               IS 'На кого проведена транзакция';
+COMMENT ON COLUMN transaction_history.token_id              IS 'Id nft токена';
+COMMENT ON COLUMN transaction_history.action_id             IS 'Id действия';
+COMMENT ON COLUMN transaction_history.wallet_id             IS 'На кого проведена транзакция';
 COMMENT ON COLUMN transaction_history.created_date          IS 'Дата создания';
 COMMENT ON COLUMN transaction_history.transaction_initiator IS 'Инициатор транзакции';
 --rollback DROP TABLE transaction_history;
@@ -152,7 +150,7 @@ CREATE TABLE triggers
 (
     trigger_id   UUID           DEFAULT uuid_generate_v1()           PRIMARY KEY,
     name         VARCHAR(100)                                        NOT NULL,
-    user_id      UUID                                                NULL,
+    wallet_id    UUID                                                NULL,
     group_id     UUID                                                NULL,
     trigger_type VARCHAR(20)                                         NOT NULL,
     reward_time  VARCHAR(20)                                         NOT NULL,
@@ -165,7 +163,7 @@ CREATE TABLE triggers
 COMMENT ON TABLE  triggers              IS 'Триггер';
 COMMENT ON COLUMN triggers.trigger_id   IS 'Идентификатор триггера';
 COMMENT ON COLUMN triggers.name         IS 'Название триггера';
-COMMENT ON COLUMN triggers.user_id      IS 'id пользователя';
+COMMENT ON COLUMN triggers.wallet_id    IS 'id пользователя';
 COMMENT ON COLUMN triggers.group_id     IS 'id команды';
 COMMENT ON COLUMN triggers.trigger_type IS 'Тип триггера';
 COMMENT ON COLUMN triggers.reward_time  IS 'Время награждения';

@@ -1,4 +1,4 @@
-package io.lonmstalker.gamification.controller
+package io.lonmstalker.gamification.controller.external
 
 import io.lonmstalker.gamification.controller.external.WalletController
 import io.lonmstalker.gamification.dto.*
@@ -18,12 +18,12 @@ class WalletControllerImpl(
     override fun getTeamWallets(teamType: TeamType?, pageRq: PageRq?): Mono<Page<WalletDto>> =
         this.walletService.getTeamWallets(teamType, pageRq)
 
-    override fun getTopWallets(pageRq: PageRq?): Mono<Page<WalletDto>> =
-        this.walletService.getTopWallets(pageRq)
-
     override fun getCurrentHistory(pageRq: PageRq?): Mono<Page<TransactionHistoryDto>> =
         this.walletService.getCurrentHistory(pageRq)
 
     override fun getColleagueHistory(walletId: String, pageRq: PageRq?): Mono<Page<TransactionHistoryDto>> =
         this.walletService.getColleagueHistory(UUID.fromString(walletId), pageRq)
+
+    override fun getOne(walletId: String): Mono<WalletDto> =
+        this.walletService.getOne(UUID.fromString(walletId))
 }

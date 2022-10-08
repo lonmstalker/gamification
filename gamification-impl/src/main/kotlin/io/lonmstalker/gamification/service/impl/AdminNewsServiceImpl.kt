@@ -4,6 +4,8 @@ import io.lonmstalker.gamification.converter.ModelConverter
 import io.lonmstalker.gamification.dto.NewsDto
 import io.lonmstalker.gamification.model.Comment
 import io.lonmstalker.gamification.model.News
+import io.lonmstalker.gamification.repository.CommentRepository
+import io.lonmstalker.gamification.repository.NewsRepository
 import io.lonmstalker.gamification.service.AdminNewsService
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Service
@@ -14,8 +16,8 @@ import java.util.*
 @Service
 class AdminNewsServiceImpl(
     private val modelConverter: ModelConverter,
-    private val newsRepository: ReactiveCrudRepository<News, UUID>,
-    private val commentRepository: ReactiveCrudRepository<Comment, UUID>
+    private val newsRepository: NewsRepository,
+    private val commentRepository: CommentRepository
 ) : AdminNewsService {
 
     @Transactional

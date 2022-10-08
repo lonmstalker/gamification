@@ -1,4 +1,4 @@
-package io.lonmstalker.gamification.controller
+package io.lonmstalker.gamification.controller.external
 
 import io.lonmstalker.gamification.controller.external.NewsController
 import io.lonmstalker.gamification.dto.CommentDto

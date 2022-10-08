@@ -9,9 +9,8 @@ interface WalletService {
 
     fun getTeamWallets(teamType: TeamType?, pageRq: PageRq?): Mono<Page<WalletDto>>
 
-    fun getTopWallets(pageRq: PageRq?): Mono<Page<WalletDto>>
-
     fun getCurrentHistory(pageRq: PageRq?): Mono<Page<TransactionHistoryDto>>
 
     fun getColleagueHistory(walletId: UUID, pageRq: PageRq?): Mono<Page<TransactionHistoryDto>>
+    fun getOne(walletId: UUID): Mono<WalletDto>
 }

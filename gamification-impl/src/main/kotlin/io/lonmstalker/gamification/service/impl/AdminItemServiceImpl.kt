@@ -3,6 +3,7 @@ package io.lonmstalker.gamification.service.impl
 import io.lonmstalker.gamification.converter.ModelConverter
 import io.lonmstalker.gamification.dto.ItemDto
 import io.lonmstalker.gamification.model.Item
+import io.lonmstalker.gamification.repository.ItemRepository
 import io.lonmstalker.gamification.service.ItemService
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Service
@@ -11,9 +12,9 @@ import reactor.core.publisher.Mono
 import java.util.*
 
 @Service
-class ItemServiceImpl(
+class AdminItemServiceImpl(
     private val modelConverter: ModelConverter,
-    private val itemRepository: ReactiveCrudRepository<Item, UUID>,
+    private val itemRepository: ItemRepository,
 ) : ItemService {
 
     @Transactional

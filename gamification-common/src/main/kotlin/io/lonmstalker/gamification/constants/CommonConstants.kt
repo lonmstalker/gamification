@@ -1,5 +1,5 @@
 package io.lonmstalker.gamification.constants
 
 object CommonConstants {
-    const val createdDate = "created_date"
+    const val CREATED_DATE = "created_date"
 }

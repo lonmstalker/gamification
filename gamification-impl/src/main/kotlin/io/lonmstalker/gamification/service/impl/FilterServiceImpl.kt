@@ -45,7 +45,7 @@ class FilterServiceImpl(private val r2dbcEntityTemplate: R2dbcEntityTemplate) : 
             val sort = pageRq.sort
             query.sort(Sort.by(Sort.Direction.valueOf(sort!!.direction.name), sort.fieldName.toSnakeCase()))
         } else {
-            query.sort(Sort.by(Sort.Direction.DESC, CommonConstants.createdDate))
+            query.sort(Sort.by(Sort.Direction.DESC, CommonConstants.CREATED_DATE))
         }
 
         if (!pageRq.selectFields.isNullOrEmpty()) {

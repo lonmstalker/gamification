@@ -24,10 +24,10 @@ class TransferGatewayImpl(
 ) : TransferGateway {
 
     override fun transfer(rq: TransferRqDto, transferType: TransferType): Mono<TransferRpDto> =
-        this.transferClient.transfer(rq, transferType.name)
+        this.transferClient.transfer(transferType.type, rq)
             .onErrorMap {
-                LOGGER.error(ERROR_TRANSFER_LOG, transferType.name, it.message)
-                TransactionException(String.format(ERROR_TRANSFER, transferType.name))
+                LOGGER.error(ERROR_TRANSFER_LOG, transferType.type, it.message)
+                TransactionException(String.format(ERROR_TRANSFER, transferType.type))
             }
 
     override fun checkTransactionStatus(transactionHash: String): Mono<TransactionStatusRqDto> =

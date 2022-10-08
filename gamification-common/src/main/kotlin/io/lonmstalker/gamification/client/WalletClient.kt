@@ -1,5 +1,6 @@
 package io.lonmstalker.gamification.client
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.lonmstalker.gamification.constants.ClientEndpointConstants.WALLET_V1
 import io.lonmstalker.gamification.model.*
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,7 +19,7 @@ interface WalletClient {
     @GetMapping("$WALLET_V1/{publicKey}/balance")
     fun getBalance(@PathVariable publicKey: String): Mono<BalanceRpDto>
 
-    @GetMapping("$WALLET_V1/{publicKey}/balance")
+    @GetMapping("$WALLET_V1/{publicKey}/nft/balance")
     fun getNftBalance(@PathVariable publicKey: String): Mono<NftBalanceRpDto>
 
     @PostMapping("$WALLET_V1/{publicKey}/history")

@@ -19,7 +19,6 @@
     <description>body for vtb more tech hackathon</description>
 
     <modules>
-        <module>gamification-admin</module>
         <module>gamification-api</module>
         <module>gamification-db</module>
         <module>gamification-impl</module>
@@ -36,11 +35,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>io.lonmstalker</groupId>
-                <artifactId>gamification-admin</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <dependency>
                 <groupId>io.lonmstalker</groupId>
                 <artifactId>gamification-db</artifactId>

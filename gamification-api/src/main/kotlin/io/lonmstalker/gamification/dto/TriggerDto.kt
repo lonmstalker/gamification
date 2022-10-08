@@ -46,5 +46,5 @@ data class TriggerDto @JsonCreator constructor(
 )
 
 enum class TriggerType {
-    ALL_USERS, USERS_GROUP, ONE_USER
+    ALL_USERS, USERS_GROUP, ROLE, ONE_USER
 }

@@ -16,26 +16,35 @@ data class TransactionHistory constructor(
     val transactionId: UUID? = null,
 
     @field:Column("item_id")
-    val itemId: UUID?,
+    val itemId: UUID? = null,
 
     @field:Column("coins")
-    val coins: Double?,
+    var coins: Double? = null,
 
     @field:Column("matic")
-    val matic: Double?,
+    var matic: Double? = null,
 
-    @field:Column("nft")
-    val nft: Int?,
+    @field:Column("token_id")
+    var tokenId: Int? = null,
+
+    @field:Column("status")
+    val status: String? = null,
+
+    @field:Column("hash")
+    val hash: String,
+
+    @field:Column("action_id")
+    val actionId: UUID,
 
     @field:CreatedBy
-    @field:Column("user_id")
-    val userId: UUID,
+    @field:Column("wallet_id")
+    val walletId: UUID,
 
     @field:CreatedBy
     @field:Column("transaction_initiator")
-    val transactionInitiator: UUID?,
+    val transactionInitiator: UUID? = null,
 
     @field:CreatedDate
     @field:Column("created_date")
-    val createdDate: LocalDateTime?
+    val createdDate: LocalDateTime? = null
 )

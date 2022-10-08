@@ -1,6 +1,7 @@
-package io.lonmstalker.gamification.controller
+package io.lonmstalker.gamification.controller.external
 
 import io.lonmstalker.gamification.controller.external.MarketplaceController
+import io.lonmstalker.gamification.dto.ItemBuyRqDto
 import io.lonmstalker.gamification.dto.ItemDto
 import io.lonmstalker.gamification.dto.Page
 import io.lonmstalker.gamification.dto.PageRq
@@ -17,6 +18,6 @@ class MarketplaceControllerImpl(
     override fun getAll(pageRq: PageRq?): Mono<Page<ItemDto>> =
         this.marketplaceService.findAll(pageRq)
 
-    override fun exchange(itemId: String, paymentType: String): Mono<ItemDto> =
-        this.marketplaceService.exchange(UUID.fromString(itemId), paymentType)
+    override fun exchange(itemId: String, rqDto: ItemBuyRqDto): Mono<ItemDto> =
+        this.marketplaceService.exchange(UUID.fromString(itemId), rqDto)
 }

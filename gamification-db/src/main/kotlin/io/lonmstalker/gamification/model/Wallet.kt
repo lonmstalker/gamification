@@ -14,15 +14,6 @@ data class Wallet(
     @field:Column("wallet_id")
     val walletId: UUID?,
 
-    @field:Column("coins")
-    val coinsAmount: Double = 0.0,
-
-    @field:Column("matic")
-    val maticAmount: Double = 0.0,
-
-    @field:Column("nft")
-    val nft: JsonNode? = null,
-
     @field:Column("first_name")
     val firstName: String,
 

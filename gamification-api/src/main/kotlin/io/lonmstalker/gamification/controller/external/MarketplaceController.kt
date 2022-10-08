@@ -3,6 +3,7 @@ package io.lonmstalker.gamification.controller.external
 import com.fasterxml.jackson.annotation.JsonView
 import io.lonmstalker.gamification.constants.EndpointConstants.MARKETPLACE_ENDPOINT
 import io.lonmstalker.gamification.constants.Views
+import io.lonmstalker.gamification.dto.ItemBuyRqDto
 import io.lonmstalker.gamification.dto.ItemDto
 import io.lonmstalker.gamification.dto.Page
 import io.lonmstalker.gamification.dto.PageRq
@@ -33,9 +34,9 @@ interface MarketplaceController {
     @ApiResponse(
         description = "Полученный предмет",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = Page::class))]
+        content = [Content(schema = Schema(implementation = ItemBuyRqDto::class))]
     )
     fun exchange(
-        @PathVariable itemId: String, @RequestParam paymentType: String
+        @PathVariable itemId: String, @RequestBody rqDto: ItemBuyRqDto
     ): Mono<ItemDto>
 }

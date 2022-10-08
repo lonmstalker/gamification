@@ -1,6 +1,7 @@
 package io.lonmstalker.gamification.service.impl
 
 import io.lonmstalker.gamification.converter.ModelConverter
+import io.lonmstalker.gamification.dto.ItemBuyRqDto
 import io.lonmstalker.gamification.dto.ItemDto
 import io.lonmstalker.gamification.dto.Page
 import io.lonmstalker.gamification.dto.PageRq
@@ -24,7 +25,7 @@ class MarketplaceServiceImpl(
         this.filterService.findAll(pageRq, Item::class.java) { item -> this.modelConverter.itemToDto(item) }
             .map { it.toPage(pageRq) }
 
-    override fun exchange(itemId: UUID, paymentType: String): Mono<ItemDto> {
+    override fun exchange(itemId: UUID, rqDto: ItemBuyRqDto): Mono<ItemDto> {
         TODO("Not yet implemented")
     }
 }

@@ -1,4 +1,4 @@
-package io.lonmstalker.gamification.controller
+package io.lonmstalker.gamification.controller.admin
 
 import io.lonmstalker.gamification.controller.admin.ItemsController
 import io.lonmstalker.gamification.dto.ItemDto

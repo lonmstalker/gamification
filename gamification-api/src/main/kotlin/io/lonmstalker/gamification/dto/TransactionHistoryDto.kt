@@ -23,6 +23,15 @@ data class TransactionHistoryDto @JsonCreator constructor(
     @field:Schema(description = "Nft в транзакции")
     val nft: Int?,
 
+    @field:Schema(description = "Id токена ft")
+    val tokenId: Int? = null,
+
+    @field:Schema(description = "Статус выполнения транзакции в блокчейне")
+    val status: String? = null,
+
+    @field:Schema(description = "Id действия")
+    val actionId: UUID,
+
     @field:Schema(description = "Награда в MATIC")
     val matic: Double?,
 

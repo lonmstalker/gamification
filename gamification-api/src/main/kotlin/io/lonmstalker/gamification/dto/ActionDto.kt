@@ -27,13 +27,13 @@ data class ActionDto @JsonCreator constructor(
     val description: String?,
 
     @field:Schema(description = "Награда в монетах")
-    val coins: Double?,
+    var coins: Double?,
 
     @field:Schema(description = "Награда в MATIC")
-    val matic: Double?,
+    var matic: Double?,
 
     @field:Schema(description = "Награда в nft")
-    val nft: Int?,
+    var nft: Int?,
 
     @field:Schema(description = "Тип операции")
     val operationType: OperationType,
@@ -60,5 +60,5 @@ data class ActionDto @JsonCreator constructor(
 )
 
 enum class OperationType {
-    INCREASE, DECREASE, RESPECT
+    INCREASE, DECREASE
 }

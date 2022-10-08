@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonView
+import io.lonmstalker.gamification.constants.Views
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
 
@@ -29,11 +31,17 @@ data class WalletDto @JsonCreator constructor(
     @field:Schema(description = "Почта пользователя")
     val email: String? = null,
 
-    @field:Schema(description = "Кол-во монет в Coins")
-    val coinsAmount: Double = 0.0,
+    @field:JsonView(Views.INVISIBLE::class)
+    @field:Schema(description = "Кол-во монет в MATIC")
+    var maticAmount: Double = 0.0,
 
+    @field:JsonView(Views.INVISIBLE::class)
+    @field:Schema(description = "Кол-во монет в Coins")
+    var coinsAmount: Double = 0.0,
+
+    @field:JsonView(Views.INVISIBLE::class)
     @field:Schema(description = "Список NFT пользователя")
-    val nft: List<NftDto>? = null,
+    var nft: List<NftDto>? = null,
 
     @field:Schema(description = "Роль пользователя")
     val userRole: Role = Role.USER
@@ -42,15 +50,3 @@ data class WalletDto @JsonCreator constructor(
 enum class Role {
     ADMIN, MANAGER, HR, USER
 }
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
-data class NftDto(
-    @field:JsonProperty("uri")
-    @field:Schema(description = "Идентификатор ресурса, сопряженный с NFT-коллекцией")
-    private val uri: String,
-
-    @field:JsonProperty("tokens")
-    @field:Schema(description = "Уникальные идентификаторы отдельного NFT в NFT-коллекции")
-    private val tokens: List<Int>
-)
