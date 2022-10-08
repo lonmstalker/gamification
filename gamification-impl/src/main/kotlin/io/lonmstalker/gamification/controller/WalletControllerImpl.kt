@@ -15,7 +15,7 @@ class WalletControllerImpl(
     override fun getCurrentWallet(): Mono<WalletDto> =
         this.walletService.getCurrentWallet()
 
-    override fun getTeamWallets(teamType: TeamType, pageRq: PageRq?): Mono<Page<WalletDto>> =
+    override fun getTeamWallets(teamType: TeamType?, pageRq: PageRq?): Mono<Page<WalletDto>> =
         this.walletService.getTeamWallets(teamType, pageRq)
 
     override fun getTopWallets(pageRq: PageRq?): Mono<Page<WalletDto>> =

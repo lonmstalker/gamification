@@ -7,7 +7,7 @@ import java.util.UUID
 interface WalletService {
     fun getCurrentWallet(): Mono<WalletDto>
 
-    fun getTeamWallets(teamType: TeamType, pageRq: PageRq?): Mono<Page<WalletDto>>
+    fun getTeamWallets(teamType: TeamType?, pageRq: PageRq?): Mono<Page<WalletDto>>
 
     fun getTopWallets(pageRq: PageRq?): Mono<Page<WalletDto>>
 

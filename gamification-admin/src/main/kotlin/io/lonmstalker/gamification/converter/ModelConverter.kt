@@ -1,12 +1,8 @@
 package io.lonmstalker.gamification.converter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.lonmstalker.gamification.dto.ItemDto
-import io.lonmstalker.gamification.dto.TransactionHistoryDto
-import io.lonmstalker.gamification.dto.WalletDto
-import io.lonmstalker.gamification.model.Item
-import io.lonmstalker.gamification.model.TransactionHistory
-import io.lonmstalker.gamification.model.Wallet
+import io.lonmstalker.gamification.dto.*
+import io.lonmstalker.gamification.model.*
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,4 +27,16 @@ class ModelConverter(
 
     fun transactionToDto(transaction: TransactionHistory): TransactionHistoryDto =
         this.objectMapper.convertValue(transaction, TransactionHistoryDto::class.java)
+
+    fun dtoToNews(news: NewsDto): News =
+        this.objectMapper.convertValue(news, News::class.java)
+
+    fun newsToDto(news: News): NewsDto =
+        this.objectMapper.convertValue(news, NewsDto::class.java)
+
+    fun dtoToComment(comment: CommentDto): Comment =
+        this.objectMapper.convertValue(comment, Comment::class.java)
+
+    fun commentToDto(comment: Comment): CommentDto =
+        this.objectMapper.convertValue(comment, CommentDto::class.java)
 }

@@ -26,11 +26,11 @@ data class Item(
     @field:Column("image_uri")
     val imageUri: String,
 
-    @field:Column("money_price")
-    val moneyPrice: Long,
+    @field:Column("coins")
+    val coins: Double?,
 
-    @field:Column("nft_price")
-    val nftPrice: Long,
+    @field:Column("nft")
+    val nft: Int?,
 
     @field:CreatedDate
     @field:Column("created_date")

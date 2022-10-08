@@ -1,7 +1,6 @@
 package io.lonmstalker.gamification.dto
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect
-import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonView
 import io.lonmstalker.gamification.constants.Views
@@ -11,25 +10,19 @@ import java.util.*
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
-data class ItemDto @JsonCreator constructor(
+data class NewsDto(
 
-    @field:Schema(description = "Id предмета")
-    val itemId: UUID?,
+    @field:Schema(description = "Id новости")
+    val newsId: UUID?,
 
-    @field:Schema(description = "Название предмета")
+    @field:Schema(description = "Название новости")
     val name: String,
 
-    @field:Schema(description = "Описание предмета")
-    val description: String,
+    @field:Schema(description = "Текст новости")
+    val text: String,
 
-    @field:Schema(description = "Ссылка на картинку")
-    val imageUri: String,
-
-    @field:Schema(description = "Цена в монетах")
-    val coins: Double?,
-
-    @field:Schema(description = "Цена в nft")
-    val nft: Long?,
+    @field:Schema(description = "Открыты ли комментарии")
+    val openComments: Boolean = true,
 
     @JsonView(Views.Admin::class)
     @field:Schema(description = "Когда создано")
@@ -45,5 +38,8 @@ data class ItemDto @JsonCreator constructor(
 
     @JsonView(Views.Admin::class)
     @field:Schema(description = "Кем обновлено")
-    val updatedBy: UUID?
+    val updatedBy: UUID?,
+
+    @field:Schema(description = "Версия новости")
+    val version: Long = 0,
 )

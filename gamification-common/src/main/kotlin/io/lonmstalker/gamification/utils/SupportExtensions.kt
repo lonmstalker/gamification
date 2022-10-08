@@ -5,6 +5,10 @@ import io.lonmstalker.gamification.dto.Page
 import io.lonmstalker.gamification.dto.PageRq
 import reactor.util.function.Tuple2
 
+operator fun <T, E> Tuple2<T, E>.component1() = this.t1
+
+operator fun <T, E> Tuple2<T, E>.component2() = this.t2
+
 fun <T> Tuple2<Long, MutableList<T>>.toPage(pageRq: PageRq?): Page<T> {
     val availableCount = this.t1
     val currentCount = this.t2.size

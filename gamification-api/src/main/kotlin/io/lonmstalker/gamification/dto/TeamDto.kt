@@ -21,5 +21,5 @@ data class TeamDto @JsonCreator constructor(
 )
 
 enum class TeamType {
-    TEAM, TRIBE
+    TEAM, TRIBE, COMPANY
 }

@@ -1,28 +1,27 @@
 package io.lonmstalker.gamification.model
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
-import java.util.UUID
+import java.util.*
 
 @Table("wallet")
 data class Wallet(
 
     @Id
     @field:Column("wallet_id")
-    val userId: UUID?,
+    val walletId: UUID?,
 
     @field:Column("coins")
-    val coinsAmount: Int = 0,
+    val coinsAmount: Double = 0.0,
 
     @field:Column("matic")
-    val maticAmount: Int = 0,
+    val maticAmount: Double = 0.0,
 
     @field:Column("nft")
-    val nft: JsonNode = JsonNodeFactory.instance.missingNode(),
+    val nft: JsonNode? = null,
 
     @field:Column("first_name")
     val firstName: String,

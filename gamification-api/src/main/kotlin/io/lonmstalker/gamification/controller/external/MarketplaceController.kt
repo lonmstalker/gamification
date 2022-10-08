@@ -22,7 +22,7 @@ interface MarketplaceController {
         responseCode = "200",
         content = [Content(schema = Schema(implementation = Page::class))]
     )
-    fun getAll(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<ItemDto>>
+    fun getAll(@RequestBody(required = false) pageRq: PageRq?): Mono<Page<ItemDto>>
 
     @PostMapping("$MARKETPLACE_ENDPOINT/{itemId}")
     @ResponseStatus(HttpStatus.OK)

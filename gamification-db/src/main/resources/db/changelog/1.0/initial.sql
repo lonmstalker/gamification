@@ -8,16 +8,18 @@ CREATE EXTENSION "uuid-ossp";
 --changeset nkochnev:create-wallet
 CREATE TABLE wallet
 (
-    wallet_id   UUID        DEFAULT uuid_generate_v1()   PRIMARY KEY,
-    coins        INT         DEFAULT 0                    NOT NULL,
+    wallet_id    UUID       DEFAULT uuid_generate_v1()   PRIMARY KEY,
     nft          JSONB                                    NULL,
-    matic        INT         DEFAULT 0                    NOT NULL,
+    coins        DECIMAL    DEFAULT 0                     NOT NULL,
+    matic        DECIMAL    DEFAULT 0                     NOT NULL,
     role         VARCHAR(50)                              NOT NULL,
     first_name   VARCHAR(100)                             NOT NULL,
     last_name    VARCHAR(100)                             NULL,
     middle_name  VARCHAR(100)                             NULL,
     phone_number VARCHAR(100)                             NULL,
     email        VARCHAR(100)                             NULL,
+    private_key  VARCHAR(100)                             NOT NULL,
+    public_key   VARCHAR(100)                             NOT NULL,
     version      INT         DEFAULT 0                    NOT NULL
 );
 COMMENT ON TABLE  wallet              IS 'Кошелек пользователя';
@@ -31,6 +33,8 @@ COMMENT ON COLUMN wallet.last_name    IS 'Фамилия пользовател�
 COMMENT ON COLUMN wallet.middle_name  IS 'Отчество пользователя';
 COMMENT ON COLUMN wallet.phone_number IS 'Номер пользователя';
 COMMENT ON COLUMN wallet.email        IS 'Почта пользователя';
+COMMENT ON COLUMN wallet.private_key  IS 'Приватный ключ пользователя';
+COMMENT ON COLUMN wallet.public_key   IS 'Публичный ключ пользователя';
 COMMENT ON COLUMN wallet.version      IS 'Версия кошелька';
 --rollback DROP TABLE wallet;
 
@@ -49,9 +53,9 @@ COMMENT ON COLUMN teams.team_type    IS 'Роль пользователя';
 --changeset nkochnev:create-wallet_teams
 CREATE TABLE wallet_teams
 (
+    id         UUID    PRIMARY KEY,
     wallet_id  UUID    REFERENCES wallet (wallet_id)    ON DELETE CASCADE,
-    team_id    UUID    REFERENCES teams (team_id)       ON DELETE CASCADE,
-    PRIMARY KEY (wallet_id, team_id)
+    team_id    UUID    REFERENCES teams (team_id)       ON DELETE CASCADE
 );
 --rollback DROP TABLE wallet_teams;
 
@@ -62,8 +66,8 @@ CREATE TABLE items
     name         VARCHAR(100)                                        NOT NULL,
     image_uri    VARCHAR(255)                                        NOT NULL,
     description  VARCHAR(255)                                        NULL,
-    money_price  INT            DEFAULT 0                            NOT NULL,
-    nft_price    INT            DEFAULT 0                            NOT NULL,
+    coins        DECIMAL        DEFAULT 0.0                          NOT NULL,
+    nft          INT            DEFAULT 0                            NOT NULL,
     created_date TIMESTAMP      DEFAULT now()                        NOT NULL,
     created_by   UUID                                                NOT NULL,
     updated_date TIMESTAMP                                           NOT NULL,
@@ -74,8 +78,8 @@ COMMENT ON COLUMN items.item_id      IS 'Идентификатор предме
 COMMENT ON COLUMN items.name         IS 'Название предмета';
 COMMENT ON COLUMN items.description  IS 'Описание предмета';
 COMMENT ON COLUMN items.image_uri    IS 'Ссылка на картинку';
-COMMENT ON COLUMN items.money_price  IS 'Цена предмета в монетах';
-COMMENT ON COLUMN items.nft_price    IS 'Цена предмета в сертификатах';
+COMMENT ON COLUMN items.coins        IS 'Цена предмета в монетах';
+COMMENT ON COLUMN items.nft          IS 'Цена предмета в сертификатах';
 COMMENT ON COLUMN items.created_date IS 'Дата создания';
 COMMENT ON COLUMN items.created_by   IS 'Кем создано';
 COMMENT ON COLUMN items.updated_date IS 'Дата обновления';
@@ -88,8 +92,8 @@ CREATE TABLE actions
     action_id             UUID          DEFAULT uuid_generate_v1()   PRIMARY KEY,
     name                  VARCHAR(100)                               NOT NULL,
     description           VARCHAR(255)                               NULL,
-    coins_reward          INT           DEFAULT 0                    NULL,
-    nft_reward            INT           DEFAULT 0                    NULL,
+    coins                 DECIMAL       DEFAULT 0                    NULL,
+    nft                   INT           DEFAULT 0                    NULL,
     role                  VARCHAR(50)                                NULL,
     can_be_changed_reward BOOLEAN,
     operation_type        VARCHAR(50)                                NOT NULL,
@@ -119,7 +123,7 @@ CREATE TABLE transaction_history
     item_id                UUID                                         NULL,
     hash                   VARCHAR(100)                                 NOT NULL,
     description            VARCHAR(255)                                 NULL,
-    coins                  INT                                          NULL,
+    coins                  DECIMAL        DEFAULT 0                     NULL,
     nft                    INT            DEFAULT 0                     NULL,
     user_id                INT            DEFAULT 0                     NOT NULL,
     created_date           TIMESTAMP      DEFAULT now()                 NOT NULL,
@@ -165,3 +169,59 @@ COMMENT ON COLUMN triggers.created_by   IS 'Кем создано';
 COMMENT ON COLUMN triggers.updated_date IS 'Дата обновления';
 COMMENT ON COLUMN triggers.updated_by   IS 'Кем обновлено';
 --rollback DROP TABLE triggers;
+
+--changeset nkoechnev:create-deafult-team
+INSERT INTO teams (name, team_type) VALUES ('ВТБ', 'COMPANY');
+--rollback DELETE FROM teams WHERE name = 'ВТБ'
+
+--changeset nkochnev:create-news
+CREATE TABLE news
+(
+    news_id      UUID           DEFAULT uuid_generate_v1()           PRIMARY KEY,
+    name         VARCHAR(200)                                        NOT NULL,
+    text         TEXT                                                NOT NULL,
+    open_comm    BOOLEAN        DEFAULT false                        NOT NULL,
+    created_date TIMESTAMP      DEFAULT now()                        NOT NULL,
+    created_by   UUID                                                NOT NULL,
+    updated_date TIMESTAMP                                           NOT NULL,
+    updated_by   UUID                                                NOT NULL,
+    version      INT            DEFAULT 0                            NOT NULL
+);
+COMMENT ON TABLE  news              IS 'Новость ';
+COMMENT ON COLUMN news.news_id      IS 'Идентификатор новости';
+COMMENT ON COLUMN news.name         IS 'Название новости';
+COMMENT ON COLUMN news.text         IS 'Текст новости';
+COMMENT ON COLUMN news.open_comm    IS 'Комментарии открыты';
+COMMENT ON COLUMN news.created_date IS 'Дата создания';
+COMMENT ON COLUMN news.created_by   IS 'Кем создано';
+COMMENT ON COLUMN news.updated_date IS 'Дата обновления';
+COMMENT ON COLUMN news.updated_by   IS 'Кем обновлено';
+COMMENT ON COLUMN news.version      IS 'Версия новости';
+--rollback DROP TABLE news;
+
+--changeset nkochnev:create-comments
+CREATE TABLE comments
+(
+    comment_id   UUID           DEFAULT uuid_generate_v1()           PRIMARY KEY,
+    news_id      UUID           REFERENCES news(news_id)             ON DELETE CASCADE,
+    text         TEXT                                                NOT NULL,
+    edited       BOOLEAN        DEFAULT false                        NOT NULL,
+    likes        INT            DEFAULT 0                            NOT NULL,
+    created_date TIMESTAMP      DEFAULT now()                        NOT NULL,
+    created_by   UUID                                                NOT NULL,
+    updated_date TIMESTAMP                                           NOT NULL,
+    updated_by   UUID                                                NOT NULL,
+    version      INT            DEFAULT 0                            NOT NULL
+);
+COMMENT ON TABLE  comments              IS 'Комментарий';
+COMMENT ON COLUMN comments.comment_id   IS 'Идентификатор комментарий';
+COMMENT ON COLUMN comments.news_id      IS 'Id новости';
+COMMENT ON COLUMN comments.text         IS 'Текст комментария';
+COMMENT ON COLUMN comments.edited       IS 'Было ли исправление';
+COMMENT ON COLUMN comments.likes        IS 'Кол-во благодарностей';
+COMMENT ON COLUMN comments.created_date IS 'Дата создания';
+COMMENT ON COLUMN comments.created_by   IS 'Кем создано';
+COMMENT ON COLUMN comments.updated_date IS 'Дата обновления';
+COMMENT ON COLUMN comments.updated_by   IS 'Кем обновлено';
+COMMENT ON COLUMN comments.version      IS 'Версия новости';
+--rollback DROP TABLE comments;

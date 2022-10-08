@@ -11,6 +11,7 @@ object Errors {
     const val ERROR_GET_WALLET_LOG = "Ошибка получения баланса: '{}'"
     const val ERROR_GET_NFT_WALLET_LOG = "Ошибка получения баланса в NFT: '{}'"
     const val ERROR_GET_TRANSACTIONS_LOG = "Ошибка получения списка транзакций: '{}'"
+    const val ERROR_FORBIDDEN_ACCESS_LOG = "Пользователь '{}' пытался '{}'"
 
     // messages
     const val ERROR_GENERATE_NFT = "Ошибка генерации NFT"
@@ -24,4 +25,8 @@ object Errors {
     const val ERROR_GET_TRANSACTIONS = "Ошибка получения списка транзакций"
 
     const val SERVER_ERROR = "Ошибка работы сервиса"
+
+    // info messages
+    const val COMMENTS_CLOSED = "Комментарии закрыты"
+    const val COMMENT_FORBIDDEN = "Нет доступа к комментарию"
 }

@@ -30,19 +30,19 @@ data class Page<T> @JsonCreator constructor(
 data class PageRq @JsonCreator constructor(
 
     @field:Schema(description = "Необходимая страница")
-    val page: Int = 0,
+    val page: Int = 1,
 
     @field:Schema(description = "Необходимый размер страницы")
-    val offset: Int = 0,
+    val offset: Int = 10,
 
     @field:Schema(description = "Список фильтров для поиска")
-    var filter: MutableSet<FilterRq>?,
+    var filter: MutableSet<FilterRq>? = null,
 
     @field:Schema(description = "Тип сортировки")
-    val sort: SortRq?,
+    var sort: SortRq? = null,
 
     @field:Schema(description = "Список необходимых полей объекта, если пусто - все")
-    val selectFields: MutableList<String>?
+    val selectFields: MutableList<String>? = null
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

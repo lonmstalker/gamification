@@ -30,10 +30,10 @@ data class WalletDto @JsonCreator constructor(
     val email: String? = null,
 
     @field:Schema(description = "Кол-во монет в Coins")
-    val coinsAmount: Long = 0,
+    val coinsAmount: Double = 0.0,
 
     @field:Schema(description = "Список NFT пользователя")
-    val nftA: List<NftDto> = listOf(),
+    val nft: List<NftDto>? = null,
 
     @field:Schema(description = "Роль пользователя")
     val userRole: Role = Role.USER

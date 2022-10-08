@@ -19,7 +19,7 @@ data class TransactionHistory constructor(
     val itemId: UUID?,
 
     @field:Column("coins")
-    val coins: Long?,
+    val coins: Double?,
 
     @field:Column("nft")
     val nft: Int?,

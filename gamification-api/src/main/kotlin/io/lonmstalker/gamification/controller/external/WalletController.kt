@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import reactor.core.publisher.Mono
@@ -28,7 +29,7 @@ interface WalletController {
     )
     fun getCurrentWallet(): Mono<WalletDto>
 
-    @GetMapping("$WALLET_ENDPOINT/{teamType}")
+    @PostMapping("$WALLET_ENDPOINT/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Кошельки коллег по команде",
@@ -36,29 +37,29 @@ interface WalletController {
         content = [Content(schema = Schema(implementation = Page::class))]
     )
     fun getTeamWallets(
-        @Parameter(description = "Тип команды") @PathVariable teamType: TeamType,
-        @RequestParam(required = false) pageRq: PageRq?
+        @Parameter(description = "Тип команды, если пусто - ищет по компании") @RequestParam(required = false) teamType: TeamType?,
+        @RequestBody(required = false) pageRq: PageRq?
     ): Mono<Page<WalletDto>>
 
-    @GetMapping("$WALLET_ENDPOINT/top")
+    @PostMapping("$WALLET_ENDPOINT/top")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "Топ кошельков коллег",
         responseCode = "200",
         content = [Content(schema = Schema(implementation = Page::class))]
     )
-    fun getTopWallets(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<WalletDto>>
+    fun getTopWallets(@RequestBody(required = false) pageRq: PageRq?): Mono<Page<WalletDto>>
 
-    @GetMapping("$WALLET_ENDPOINT/history")
+    @PostMapping("$WALLET_ENDPOINT/history/list")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "История транзакций",
         responseCode = "200",
         content = [Content(schema = Schema(implementation = Page::class))]
     )
-    fun getCurrentHistory(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<TransactionHistoryDto>>
+    fun getCurrentHistory(@RequestBody(required = false) pageRq: PageRq?): Mono<Page<TransactionHistoryDto>>
 
-    @GetMapping("$WALLET_ENDPOINT/history/{walletId}")
+    @PostMapping("$WALLET_ENDPOINT/history/{walletId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
         description = "История транзакций коллеги",
@@ -66,7 +67,6 @@ interface WalletController {
         content = [Content(schema = Schema(implementation = Page::class))]
     )
     fun getColleagueHistory(
-        @PathVariable walletId: String,
-        @RequestParam(required = false) pageRq: PageRq?
+        @PathVariable walletId: String, @RequestBody(required = false) pageRq: PageRq?
     ): Mono<Page<TransactionHistoryDto>>
 }

@@ -23,10 +23,10 @@ data class ActionDto @JsonCreator constructor(
     val description: String?,
 
     @field:Schema(description = "Награда в монетах")
-    val moneyReward: Long?,
+    val coins: Double?,
 
     @field:Schema(description = "Награда в nft")
-    val nftReward: UUID?,
+    val nft: Int?,
 
     @field:Schema(description = "Тип операции")
     val operationType: OperationType,

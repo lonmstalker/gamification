@@ -4,32 +4,26 @@ import org.springframework.data.annotation.*
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
-@Table("action")
-data class Action(
+@Table("comments")
+data class Comment(
 
     @field:Id
-    @field:Column("action_id")
-    val actionId: UUID?,
+    @field:Column("comment_id")
+    val commentId: UUID? = null,
 
-    @field:Column("name")
-    val name: String,
+    @field:Column("news_id")
+    val newsId: UUID,
 
-    @field:Column("description")
-    val description: String?,
+    @field:Column("text")
+    val text: String,
 
-    @field:Column("coins")
-    val coins: Double?,
+    @field:Column("edited")
+    val edited: Boolean,
 
-    @field:Column("nft")
-    val nft: Int?,
-
-    @field:Column("operation_type")
-    val operationType: OperationType,
-
-    @field:Column("can_be_changed_reward")
-    val canBeChangedReward: Boolean = false,
+    @field:Column("likes")
+    val likes: Int? = null,
 
     @field:CreatedDate
     @field:Column("created_date")
@@ -46,8 +40,4 @@ data class Action(
     @field:LastModifiedBy
     @field:Column("updated_by")
     val updatedBy: UUID?
-) {
-    enum class OperationType {
-        INCREASE, DECREASE, RESPECT
-    }
-}
+)

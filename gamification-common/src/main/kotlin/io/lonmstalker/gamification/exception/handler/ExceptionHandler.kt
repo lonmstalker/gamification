@@ -1,9 +1,10 @@
-package io.lonmstalker.gamification.exception.exception
+package io.lonmstalker.gamification.exception.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.lonmstalker.gamification.constants.Errors.SERVER_ERROR
 import io.lonmstalker.gamification.exception.BusinessException
 import io.lonmstalker.gamification.model.ErrorDto
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import java.time.LocalDateTime
 
+@Order(-1)
 @Component
 class ExceptionHandler(private val objectMapper: ObjectMapper) : WebExceptionHandler {
 
@@ -25,13 +27,10 @@ class ExceptionHandler(private val objectMapper: ObjectMapper) : WebExceptionHan
         return this.writeBytes(SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR, exchange)
     }
 
-    private fun writeBytes(message: String, status: HttpStatus, exchange: ServerWebExchange) =
-        exchange.response.writeWith {
-            Mono.fromCallable {
-                exchange.response.statusCode = status
-                val bytes: ByteArray =
-                    this.objectMapper.writeValueAsBytes(ErrorDto(message, LocalDateTime.now()))
-                exchange.response.writeWith(Flux.just(exchange.response.bufferFactory().wrap(bytes)))
-            }
-        }.subscribeOn(Schedulers.boundedElastic())
+    private fun writeBytes(message: String, status: HttpStatus, exchange: ServerWebExchange): Mono<Void> {
+        exchange.response.statusCode = status
+        val bytes: ByteArray = this.objectMapper.writeValueAsBytes(ErrorDto(message, LocalDateTime.now()))
+        val buffer = exchange.response.bufferFactory().wrap(bytes)
+        return exchange.response.writeWith(Mono.just(buffer))
+    }
 }

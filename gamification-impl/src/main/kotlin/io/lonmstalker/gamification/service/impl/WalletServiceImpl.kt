@@ -30,7 +30,7 @@ class WalletServiceImpl(
             this.walletGateway.createWallet().flatMap {
                 this.walletRepository.save(
                     Wallet(
-                        userId = user.userId,
+                        walletId = user.userId,
                         userRole = Role.USER.name,
                         privateKey = it.privateKey,
                         publicKey = it.publicKey,
@@ -43,12 +43,15 @@ class WalletServiceImpl(
     }.map { this.modelConverter.walletToDto(it) }
 
     @Transactional(readOnly = true)
-    override fun getTeamWallets(teamType: TeamType, pageRq: PageRq?): Mono<Page<WalletDto>> = pageRq?.let {
-        if (pageRq.filter == null) it.filter = HashSet(1)
-        it.filter!!.add(FilterRq(teamType.name, "teamType", FilterRq.Operation.EQUAL))
+    override fun getTeamWallets(teamType: TeamType?, pageRq: PageRq?): Mono<Page<WalletDto>> = pageRq?.let {
+        if (teamType != null) {
+            if (pageRq.filter == null) it.filter = HashSet(1)
+            it.filter!!.add(FilterRq(teamType.name, "teamType", FilterRq.Operation.EQUAL))
+        }
     }.run { filterService.findAll(pageRq, Wallet::class.java) { modelConverter.walletToDto(it) } }
         .map { it.toPage(pageRq) }
 
+    @Transactional(readOnly = true)
     override fun getTopWallets(pageRq: PageRq?): Mono<Page<WalletDto>> {
         if (pageRq == null) return Mono.empty()
 
