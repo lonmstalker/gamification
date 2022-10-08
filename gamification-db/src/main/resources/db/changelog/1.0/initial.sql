@@ -95,7 +95,8 @@ CREATE TABLE actions
     coins                 DECIMAL       DEFAULT 0                    NULL,
     nft                   INT           DEFAULT 0                    NULL,
     role                  VARCHAR(50)                                NULL,
-    can_be_changed_reward BOOLEAN,
+    can_be_changed_reward BOOLEAN       DEFAULT true                 NOT NULL,
+    one_time              BOOLEAN       DEFAULT false                NOT NULL,
     operation_type        VARCHAR(50)                                NOT NULL,
     created_date          TIMESTAMP     DEFAULT now()                NOT NULL,
     created_by            UUID                                       NOT NULL,
@@ -109,6 +110,7 @@ COMMENT ON COLUMN actions.description             IS 'Описание опер�
 COMMENT ON COLUMN actions.coins                   IS 'Сумма операции в монетах';
 COMMENT ON COLUMN actions.nft                     IS 'Сумма операции в сертификатах';
 COMMENT ON COLUMN actions.role                    IS 'Необходимая роль для операции';
+COMMENT ON COLUMN actions.one_time                IS 'Флаг для одноразовых операций';
 COMMENT ON COLUMN actions.can_be_changed_reward   IS 'Возможность менять награду при награждении';
 COMMENT ON COLUMN actions.created_date            IS 'Дата создания';
 COMMENT ON COLUMN actions.created_by              IS 'Кем создано';
@@ -169,10 +171,6 @@ COMMENT ON COLUMN triggers.created_by   IS 'Кем создано';
 COMMENT ON COLUMN triggers.updated_date IS 'Дата обновления';
 COMMENT ON COLUMN triggers.updated_by   IS 'Кем обновлено';
 --rollback DROP TABLE triggers;
-
---changeset nkoechnev:create-deafult-team
-INSERT INTO teams (name, team_type) VALUES ('ВТБ', 'COMPANY');
---rollback DELETE FROM teams WHERE name = 'ВТБ'
 
 --changeset nkochnev:create-news
 CREATE TABLE news

@@ -5,7 +5,7 @@ object EndpointConstants {
     private const val EXTERNAL_ENDPOINT = "/external/v1"
 
     const val ADMIN_TEAM_ENDPOINT = "$ADMIN_ENDPOINT/teams"
-    const val ADMIN_OPERATION_ENDPOINT = "$ADMIN_ENDPOINT/operations"
+    const val ADMIN_OPERATION_ENDPOINT = "$ADMIN_ENDPOINT/actions"
     const val ADMIN_WALLET_ENDPOINT = "$ADMIN_ENDPOINT/wallets"
     const val ADMIN_TRIGGER_ENDPOINT = "$ADMIN_ENDPOINT/trigger"
     const val ADMIN_ITEMS_ENDPOINT = "$ADMIN_ENDPOINT/items"
@@ -14,4 +14,5 @@ object EndpointConstants {
     const val WALLET_ENDPOINT = "$EXTERNAL_ENDPOINT/wallets"
     const val MARKETPLACE_ENDPOINT = "$EXTERNAL_ENDPOINT/marketplace"
     const val NEWS_ENDPOINT = "$EXTERNAL_ENDPOINT/news"
+    const val OPERATIONS_ENDPOINT = "$EXTERNAL_ENDPOINT/actions"
 }

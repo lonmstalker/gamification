@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
+import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebExceptionHandler
 import reactor.core.publisher.Flux
@@ -24,6 +25,10 @@ class ExceptionHandler(private val objectMapper: ObjectMapper) : WebExceptionHan
         if (ex is BusinessException) {
             return this.writeBytes(ex.message!!, HttpStatus.BAD_REQUEST, exchange)
         }
+        if (ex is ResponseStatusException) {
+            return this.writeBytes(ex.message, ex.status, exchange)
+        }
+        ex.printStackTrace()
         return this.writeBytes(SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR, exchange)
     }
 

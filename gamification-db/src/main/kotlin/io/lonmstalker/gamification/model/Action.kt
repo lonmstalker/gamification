@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
 import java.util.UUID
 
-@Table("action")
+@Table("actions")
 data class Action(
 
     @field:Id
@@ -15,6 +15,9 @@ data class Action(
 
     @field:Column("name")
     val name: String,
+
+    @field:Column("one_time")
+    val oneTime: Boolean = false,
 
     @field:Column("description")
     val description: String?,
@@ -26,7 +29,7 @@ data class Action(
     val nft: Int?,
 
     @field:Column("operation_type")
-    val operationType: OperationType,
+    val operationType: String,
 
     @field:Column("can_be_changed_reward")
     val canBeChangedReward: Boolean = false,
@@ -46,8 +49,4 @@ data class Action(
     @field:LastModifiedBy
     @field:Column("updated_by")
     val updatedBy: UUID?
-) {
-    enum class OperationType {
-        INCREASE, DECREASE, RESPECT
-    }
-}
+)

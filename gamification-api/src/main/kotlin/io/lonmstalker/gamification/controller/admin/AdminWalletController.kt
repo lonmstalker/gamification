@@ -27,8 +27,8 @@ interface AdminWalletController {
         content = [Content(schema = Schema(implementation = WalletDto::class))]
     )
     fun reward(
+        @Parameter(description = "Id кошелька") @PathVariable walletId: String,
         @Parameter(description = "Id действия, за которое награждают") @RequestParam operationId: String,
-        @Parameter(description = "Id кошелька") @PathVariable walletId: String
     ): Mono<WalletDto>
 
     @GetMapping("$ADMIN_WALLET_ENDPOINT/list")

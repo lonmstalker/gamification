@@ -39,4 +39,10 @@ class ModelConverter(
 
     fun commentToDto(comment: Comment): CommentDto =
         this.objectMapper.convertValue(comment, CommentDto::class.java)
+
+    fun dtoToAction(action: ActionDto): Action =
+        this.objectMapper.convertValue(action, Action::class.java)
+
+    fun actionToDto(action: Action): ActionDto =
+        this.objectMapper.convertValue(action, ActionDto::class.java)
 }

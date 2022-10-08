@@ -19,6 +19,10 @@ data class ActionDto @JsonCreator constructor(
     @field:Schema(description = "Название действия")
     val name: String,
 
+    @JsonView(Views.Admin::class)
+    @field:Schema(description = "Флаг для одноразовых операций, которые добавили из-за отсутсвия необходимого в списке")
+    val oneTime: Boolean = false,
+
     @field:Schema(description = "Описание действия")
     val description: String?,
 
@@ -53,5 +57,5 @@ data class ActionDto @JsonCreator constructor(
 )
 
 enum class OperationType {
-    PLUS, MINUS
+    INCREASE, DECREASE, RESPECT
 }
