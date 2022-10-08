@@ -7,7 +7,7 @@ import io.lonmstalker.gamification.dto.PageRq
 import io.lonmstalker.gamification.model.Item
 import io.lonmstalker.gamification.service.FilterService
 import io.lonmstalker.gamification.service.MarketplaceService
-import io.lonmstalker.gamification.service.utils.toPage
+import io.lonmstalker.gamification.utils.toPage
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono

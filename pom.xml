@@ -31,6 +31,7 @@
         <kotlin.version>1.6.21</kotlin.version>
         <spring-cloud.version>2021.0.4</spring-cloud.version>
         <springdoc-version>1.6.11</springdoc-version>
+        <reactive-feign.version>3.2.6</reactive-feign.version>
     </properties>
 
     <dependencyManagement>
@@ -61,6 +62,14 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- FEIGN -->
+            <dependency>
+                <groupId>com.playtika.reactivefeign</groupId>
+                <artifactId>feign-reactor-spring-cloud-starter</artifactId>
+                <version>${reactive-feign.version}</version>
+                <type>pom</type>
             </dependency>
 
             <dependency>

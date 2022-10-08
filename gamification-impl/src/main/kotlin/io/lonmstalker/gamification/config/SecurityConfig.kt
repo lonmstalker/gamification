@@ -1,6 +1,6 @@
 package io.lonmstalker.gamification.config
 
-import io.lonmstalker.gamification.service.utils.UserUtils
+import io.lonmstalker.gamification.utils.UserUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.ReactiveAuditorAware

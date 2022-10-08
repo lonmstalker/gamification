@@ -4,17 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView
 import io.lonmstalker.gamification.constants.EndpointConstants.ADMIN_ITEMS_ENDPOINT
 import io.lonmstalker.gamification.constants.Views
 import io.lonmstalker.gamification.dto.ItemDto
-import io.lonmstalker.gamification.dto.Page
-import io.lonmstalker.gamification.dto.PageRq
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Tag(name = "Контроллер предметов", description = "Контроллер для управления предметами")
@@ -42,16 +38,6 @@ interface ItemsController {
         @RequestBody item: ItemDto,
         @Parameter(description = "Id предмета") @PathVariable itemId: String
     ): Mono<ItemDto>
-
-    @JsonView(Views.Admin::class)
-    @PostMapping("$ADMIN_ITEMS_ENDPOINT/list")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiResponse(
-        description = "Список предметов",
-        responseCode = "200",
-        content = [Content(array = ArraySchema(schema = Schema(implementation = Page::class)))]
-    )
-    fun getAll(@RequestBody(required = false) pageRq: PageRq?): Mono<Page<ItemDto>>
 
     @JsonView(Views.Admin::class)
     @GetMapping("$ADMIN_ITEMS_ENDPOINT/{itemId}")

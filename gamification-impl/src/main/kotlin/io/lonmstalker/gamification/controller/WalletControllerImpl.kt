@@ -5,6 +5,7 @@ import io.lonmstalker.gamification.dto.*
 import io.lonmstalker.gamification.service.WalletService
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
+import java.util.*
 
 @RestController
 class WalletControllerImpl(
@@ -23,4 +24,6 @@ class WalletControllerImpl(
     override fun getCurrentHistory(pageRq: PageRq?): Mono<Page<TransactionHistoryDto>> =
         this.walletService.getCurrentHistory(pageRq)
 
+    override fun getColleagueHistory(walletId: String, pageRq: PageRq?): Mono<Page<TransactionHistoryDto>> =
+        this.walletService.getColleagueHistory(UUID.fromString(walletId), pageRq)
 }

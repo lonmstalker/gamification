@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
-data class ExchangeRqDto(
+data class TransferRqDto(
     @field:JsonProperty("fromPrivateKey") private val fromPrivateKey: String,
     @field:JsonProperty("toPublicKey") private val toPublicKey: String,
     @field:JsonProperty("amount") private val amount: Double?,
@@ -15,6 +15,10 @@ data class ExchangeRqDto(
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
-data class ExchangeRpDto(
+data class TransferRpDto(
     @field:JsonProperty("transactionHash") private val transactionHash: String
 )
+
+enum class TransferType(type: String) {
+    MATIC("matic"), RUBLE("ruble"), NFT("nft")
+}

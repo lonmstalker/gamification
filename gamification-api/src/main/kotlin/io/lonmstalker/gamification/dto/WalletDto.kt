@@ -14,14 +14,26 @@ data class WalletDto @JsonCreator constructor(
     @field:Schema(description = "Id кошелька")
     val walletId: UUID?,
 
-    @field:Schema(description = "Кол-во монет в MATIC")
-    val maticAmount: Long = 0,
+    @field:Schema(description = "Имя пользователя")
+    val firstName: String,
+
+    @field:Schema(description = "Фамилия пользователя")
+    val lastName: String? = null,
+
+    @field:Schema(description = "Отчество пользователя")
+    val middleName: String? = null,
+
+    @field:Schema(description = "Номер пользователя")
+    val phoneNumber: String? = null,
+
+    @field:Schema(description = "Почта пользователя")
+    val email: String? = null,
 
     @field:Schema(description = "Кол-во монет в Coins")
     val coinsAmount: Long = 0,
 
     @field:Schema(description = "Список NFT пользователя")
-    val nftAmount: List<NftDto>,
+    val nftA: List<NftDto> = listOf(),
 
     @field:Schema(description = "Роль пользователя")
     val userRole: Role = Role.USER

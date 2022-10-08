@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     name: gamification
@@ -15,18 +16,23 @@ spring:
     pool:
       enabled: true
       max-size: 10
-      max-idle-time: 5
+      max-idle-time: 30m
       validation-query: SELECT 1
   netty:
     leak-detection: paranoid
   webflux:
     base-path: /game
+
+app:
+  blockchainApiUrl: ${BLOCKCHAIN_URL:https://hackathon.lsp.team/hk}
+
 management:
   endpoint:
     restart:
       enabled: false
     refresh:
       enabled: false
+
 springdoc:
   swagger-ui:
     enabled: true
@@ -37,6 +43,7 @@ springdoc:
   api-docs:
     enabled: true
     path: /v3/api-docs
+
 logging:
   level:
     io.lonmstalker: DEBUG

@@ -8,16 +8,30 @@ CREATE EXTENSION "uuid-ossp";
 --changeset nkochnev:create-wallet
 CREATE TABLE wallet
 (
-    wallet_id UUID        DEFAULT uuid_generate_v1()   PRIMARY KEY,
-    money     INT         DEFAULT 0                    NOT NULL,
-    nft       INT         DEFAULT 0                    NOT NULL,
-    role      VARCHAR(50)                              NOT NULL
+    wallet_id   UUID        DEFAULT uuid_generate_v1()   PRIMARY KEY,
+    coins        INT         DEFAULT 0                    NOT NULL,
+    nft          JSONB                                    NULL,
+    matic        INT         DEFAULT 0                    NOT NULL,
+    role         VARCHAR(50)                              NOT NULL,
+    first_name   VARCHAR(100)                             NOT NULL,
+    last_name    VARCHAR(100)                             NULL,
+    middle_name  VARCHAR(100)                             NULL,
+    phone_number VARCHAR(100)                             NULL,
+    email        VARCHAR(100)                             NULL,
+    version      INT         DEFAULT 0                    NOT NULL
 );
-COMMENT ON TABLE  wallet           IS 'Кошелек пользователя';
-COMMENT ON COLUMN wallet.wallet_id IS 'Идентификатор кошелька';
-COMMENT ON COLUMN wallet.money     IS 'Денег в монетах';
-COMMENT ON COLUMN wallet.nft       IS 'Денег в сертификатах';
-COMMENT ON COLUMN wallet.role      IS 'Роль пользователя';
+COMMENT ON TABLE  wallet              IS 'Кошелек пользователя';
+COMMENT ON COLUMN wallet.wallet_id    IS 'Идентификатор кошелька';
+COMMENT ON COLUMN wallet.coins        IS 'Денег в монетах';
+COMMENT ON COLUMN wallet.nft          IS 'NFT сертификаты';
+COMMENT ON COLUMN wallet.matic        IS 'Денег в MATIC';
+COMMENT ON COLUMN wallet.role         IS 'Роль пользователя';
+COMMENT ON COLUMN wallet.first_name   IS 'Имя пользователя';
+COMMENT ON COLUMN wallet.last_name    IS 'Фамилия пользователя';
+COMMENT ON COLUMN wallet.middle_name  IS 'Отчество пользователя';
+COMMENT ON COLUMN wallet.phone_number IS 'Номер пользователя';
+COMMENT ON COLUMN wallet.email        IS 'Почта пользователя';
+COMMENT ON COLUMN wallet.version      IS 'Версия кошелька';
 --rollback DROP TABLE wallet;
 
 --changeset nkochnev:create-teams
@@ -74,8 +88,8 @@ CREATE TABLE actions
     action_id             UUID          DEFAULT uuid_generate_v1()   PRIMARY KEY,
     name                  VARCHAR(100)                               NOT NULL,
     description           VARCHAR(255)                               NULL,
-    money_reward          INT           DEFAULT 0                    NOT NULL,
-    nft_reward            INT           DEFAULT 0                    NOT NULL,
+    coins_reward          INT           DEFAULT 0                    NULL,
+    nft_reward            INT           DEFAULT 0                    NULL,
     role                  VARCHAR(50)                                NULL,
     can_be_changed_reward BOOLEAN,
     operation_type        VARCHAR(50)                                NOT NULL,
@@ -88,8 +102,8 @@ COMMENT ON TABLE  actions                         IS 'Действие, за к�
 COMMENT ON COLUMN actions.action_id               IS 'Идентификатор действия';
 COMMENT ON COLUMN actions.name                    IS 'Название операции';
 COMMENT ON COLUMN actions.description             IS 'Описание операции';
-COMMENT ON COLUMN actions.money_reward            IS 'Сумма операции в монетах';
-COMMENT ON COLUMN actions.nft_reward              IS 'Сумма операции в сертификатах';
+COMMENT ON COLUMN actions.coins                   IS 'Сумма операции в монетах';
+COMMENT ON COLUMN actions.nft                     IS 'Сумма операции в сертификатах';
 COMMENT ON COLUMN actions.role                    IS 'Необходимая роль для операции';
 COMMENT ON COLUMN actions.can_be_changed_reward   IS 'Возможность менять награду при награждении';
 COMMENT ON COLUMN actions.created_date            IS 'Дата создания';
@@ -103,7 +117,9 @@ CREATE TABLE transaction_history
 (
     transaction_id         UUID           DEFAULT uuid_generate_v1()    PRIMARY KEY,
     item_id                UUID                                         NULL,
-    money                  INT                                          NULL,
+    hash                   VARCHAR(100)                                 NOT NULL,
+    description            VARCHAR(255)                                 NULL,
+    coins                  INT                                          NULL,
     nft                    INT            DEFAULT 0                     NULL,
     user_id                INT            DEFAULT 0                     NOT NULL,
     created_date           TIMESTAMP      DEFAULT now()                 NOT NULL,
@@ -112,7 +128,9 @@ CREATE TABLE transaction_history
 COMMENT ON TABLE  transaction_history                       IS 'Транзакции';
 COMMENT ON COLUMN transaction_history.transaction_id        IS 'Идентификатор транзакции';
 COMMENT ON COLUMN transaction_history.item_id               IS 'В случае обмена id предмета';
-COMMENT ON COLUMN transaction_history.money                 IS 'Сумма в монетах';
+COMMENT ON COLUMN transaction_history.hash                  IS 'Хеш транзакции в блокчейне';
+COMMENT ON COLUMN transaction_history.description           IS 'Пояснение транзакции, если необходимо';
+COMMENT ON COLUMN transaction_history.coins                 IS 'Сумма в монетах';
 COMMENT ON COLUMN transaction_history.nft                   IS 'Сумма в nft';
 COMMENT ON COLUMN transaction_history.user_id               IS 'На кого проведена транзакция';
 COMMENT ON COLUMN transaction_history.created_date          IS 'Дата создания';

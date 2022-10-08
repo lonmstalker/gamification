@@ -17,7 +17,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Tag(name = "Контроллер кошельков", description = "Контроллер для управления кошельками")
-interface WalletController {
+interface AdminWalletController {
 
     @PutMapping("$ADMIN_WALLET_ENDPOINT/{walletId}")
     @ResponseStatus(HttpStatus.OK)
@@ -67,6 +67,6 @@ interface WalletController {
     )
     fun getHistory(
         @RequestParam(required = false) pageRq: PageRq?,
-        @Parameter(description = "Id кошелька") @PathVariable(required = false) walletId: String?
+        @Parameter(description = "Id кошелька, если ") @PathVariable(required = false) walletId: String?
     ): Mono<Page<TransactionHistoryDto>>
 }

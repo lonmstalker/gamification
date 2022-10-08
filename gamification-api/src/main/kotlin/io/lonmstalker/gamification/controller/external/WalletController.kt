@@ -10,9 +10,11 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import reactor.core.publisher.Mono
+import java.util.UUID
 
 @Tag(name = "Контроллер кошелька", description = "Контроллер для работы с кошельком")
 interface WalletController {
@@ -55,4 +57,16 @@ interface WalletController {
         content = [Content(schema = Schema(implementation = Page::class))]
     )
     fun getCurrentHistory(@RequestParam(required = false) pageRq: PageRq?): Mono<Page<TransactionHistoryDto>>
+
+    @GetMapping("$WALLET_ENDPOINT/history/{walletId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponse(
+        description = "История транзакций коллеги",
+        responseCode = "200",
+        content = [Content(schema = Schema(implementation = Page::class))]
+    )
+    fun getColleagueHistory(
+        @PathVariable walletId: String,
+        @RequestParam(required = false) pageRq: PageRq?
+    ): Mono<Page<TransactionHistoryDto>>
 }

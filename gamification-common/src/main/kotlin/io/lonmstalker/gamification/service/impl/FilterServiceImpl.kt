@@ -3,8 +3,8 @@ package io.lonmstalker.gamification.service.impl
 import io.lonmstalker.gamification.dto.FilterRq
 import io.lonmstalker.gamification.dto.PageRq
 import io.lonmstalker.gamification.service.FilterService
-import io.lonmstalker.gamification.service.constants.CommonConstants
-import io.lonmstalker.gamification.service.utils.toSnakeCase
+import io.lonmstalker.gamification.constants.CommonConstants
+import io.lonmstalker.gamification.utils.toSnakeCase
 import org.springframework.data.domain.Sort
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.relational.core.query.Criteria
@@ -21,9 +21,7 @@ import java.util.function.Function
  * Сервис для динамической фильтрации
  */
 @Service
-class FilterServiceImpl(
-    private val r2dbcEntityTemplate: R2dbcEntityTemplate
-) : FilterService {
+class FilterServiceImpl(private val r2dbcEntityTemplate: R2dbcEntityTemplate) : FilterService {
 
     @Transactional
     override fun <T, D> findAll(

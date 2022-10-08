@@ -2,7 +2,6 @@ package io.lonmstalker.gamification.controller
 
 import io.lonmstalker.gamification.controller.admin.ItemsController
 import io.lonmstalker.gamification.dto.ItemDto
-import io.lonmstalker.gamification.dto.PageRq
 import io.lonmstalker.gamification.service.ItemService
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
@@ -18,9 +17,6 @@ class ItemsImplController(
 
     override fun updateItem(item: ItemDto, itemId: String): Mono<ItemDto> =
         this.itemService.updateItem(item, UUID.fromString(itemId))
-
-    override fun getAll(pageRq: PageRq?) =
-        this.itemService.getAll(pageRq)
 
     override fun getOne(itemId: String): Mono<ItemDto> =
         this.itemService.getOne(UUID.fromString(itemId))

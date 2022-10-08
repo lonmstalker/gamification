@@ -1,4 +1,4 @@
-package io.lonmstalker.gamification.service.utils
+package io.lonmstalker.gamification.utils
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import io.lonmstalker.gamification.dto.Page
