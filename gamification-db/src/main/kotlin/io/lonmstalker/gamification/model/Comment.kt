@@ -27,17 +27,21 @@ data class Comment(
 
     @field:CreatedDate
     @field:Column("created_date")
-    val createdDate: LocalDateTime?,
+    val createdDate: LocalDateTime? = null,
 
     @field:CreatedBy
     @field:Column("created_by")
-    val createdBy: UUID?,
+    val createdBy: UUID? = null,
 
     @field:LastModifiedDate
     @field:Column("updated_date")
-    val updatedDate: LocalDateTime?,
+    val updatedDate: LocalDateTime? = null,
 
     @field:LastModifiedBy
     @field:Column("updated_by")
-    val updatedBy: UUID?
+    val updatedBy: UUID?,
+
+    @field:Version
+    @field:Column("version")
+    val version: Long = 0
 )

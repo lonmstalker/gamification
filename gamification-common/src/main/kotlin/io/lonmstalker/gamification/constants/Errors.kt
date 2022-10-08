@@ -27,6 +27,8 @@ object Errors {
     const val SERVER_ERROR = "Ошибка работы сервиса"
 
     // info messages
+    const val NEWS_NOT_FOUND = "Новость не найдена"
     const val COMMENTS_CLOSED = "Комментарии закрыты"
+    const val FORBIDDEN_CHANGE_LIKE = "Лайки можно обновлять только через специальную кнопку"
     const val COMMENT_FORBIDDEN = "Нет доступа к комментарию"
 }

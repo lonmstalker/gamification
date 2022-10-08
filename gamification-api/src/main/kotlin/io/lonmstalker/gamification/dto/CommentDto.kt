@@ -2,8 +2,6 @@ package io.lonmstalker.gamification.dto
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonView
-import io.lonmstalker.gamification.constants.Views
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 import java.util.*
@@ -27,19 +25,18 @@ data class CommentDto(
     @field:Schema(description = "Кол-во благодарностей")
     val likes: Int = 0,
 
-    @JsonView(Views.Admin::class)
     @field:Schema(description = "Когда создано")
     val createdDate: LocalDateTime?,
 
-    @JsonView(Views.Admin::class)
     @field:Schema(description = "Кем создано")
     val createdBy: UUID?,
 
-    @JsonView(Views.Admin::class)
     @field:Schema(description = "Когда обновлено")
     val updatedDate: LocalDateTime?,
 
-    @JsonView(Views.Admin::class)
     @field:Schema(description = "Кем обновлено")
-    val updatedBy: UUID?
+    val updatedBy: UUID?,
+
+    @field:Schema(description = "Версия комментария")
+    val version: Long = 0
 )

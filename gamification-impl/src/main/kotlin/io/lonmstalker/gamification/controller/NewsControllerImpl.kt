@@ -24,4 +24,7 @@ class NewsControllerImpl(private val newsService: NewsService) : NewsController 
 
     override fun deleteComment(commentId: String): Mono<Boolean> =
         this.newsService.deleteComment(UUID.fromString(commentId))
+
+    override fun likeComment(commentId: String): Mono<Boolean> =
+        this.newsService.likeComment(UUID.fromString(commentId))
 }

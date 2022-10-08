@@ -3,6 +3,8 @@ package io.lonmstalker.gamification.service.impl
 import io.lonmstalker.gamification.constants.Errors.COMMENTS_CLOSED
 import io.lonmstalker.gamification.constants.Errors.COMMENT_FORBIDDEN
 import io.lonmstalker.gamification.constants.Errors.ERROR_FORBIDDEN_ACCESS_LOG
+import io.lonmstalker.gamification.constants.Errors.FORBIDDEN_CHANGE_LIKE
+import io.lonmstalker.gamification.constants.Errors.NEWS_NOT_FOUND
 import io.lonmstalker.gamification.converter.ModelConverter
 import io.lonmstalker.gamification.dto.*
 import io.lonmstalker.gamification.exception.NewsException
@@ -51,11 +53,26 @@ class NewsService(
 
     @Transactional
     override fun saveComment(commentDto: CommentDto): Mono<CommentDto> =
-        this.newsRepository.findById(commentDto.newsId!!).flatMap {
-            if (!it.openComments) {
-                return@flatMap Mono.error(NewsException(COMMENTS_CLOSED))
+        if (commentDto.commentId != null) {
+            Mono.zip(
+                this.findNews(commentDto.newsId!!), this.commentRepository.findById(commentDto.commentId!!)
+            ).flatMap {
+                if (!it.t1.openComments) {
+                    return@flatMap Mono.error(NewsException(COMMENTS_CLOSED))
+                }
+                if (it.t2.likes != commentDto.likes) {
+                    return@flatMap Mono.error(NewsException(FORBIDDEN_CHANGE_LIKE))
+                }
+                this.commentRepository.save(this.modelConverter.dtoToComment(commentDto))
             }
-            this.commentRepository.save(this.modelConverter.dtoToComment(commentDto))
+        } else {
+            this.findNews(commentDto.newsId!!)
+                .flatMap {
+                    if (!it.openComments) {
+                        return@flatMap Mono.error(NewsException(COMMENTS_CLOSED))
+                    }
+                    this.commentRepository.save(this.modelConverter.dtoToComment(commentDto))
+                }
         }.map { this.modelConverter.commentToDto(it) }
 
     @Transactional
@@ -68,6 +85,13 @@ class NewsService(
                 }
                 this.commentRepository.deleteById(commentId)
             }.thenReturn(true)
+
+    @Transactional
+    override fun likeComment(commentId: UUID): Mono<Boolean> =
+        this.commentRepository.likeComment(commentId)
+
+    private fun findNews(newsId: UUID) = this.newsRepository.findById(newsId)
+        .switchIfEmpty(Mono.error(NewsException(NEWS_NOT_FOUND)))
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(this::class.java)

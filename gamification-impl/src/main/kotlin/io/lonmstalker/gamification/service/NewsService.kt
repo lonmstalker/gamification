@@ -16,4 +16,6 @@ interface NewsService {
     fun saveComment(commentDto: CommentDto): Mono<CommentDto>
 
     fun deleteComment(commentId: UUID): Mono<Boolean>
+
+    fun likeComment(commentId: UUID): Mono<Boolean>
 }

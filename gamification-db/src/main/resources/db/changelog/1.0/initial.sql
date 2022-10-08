@@ -223,5 +223,5 @@ COMMENT ON COLUMN comments.created_date IS 'Дата создания';
 COMMENT ON COLUMN comments.created_by   IS 'Кем создано';
 COMMENT ON COLUMN comments.updated_date IS 'Дата обновления';
 COMMENT ON COLUMN comments.updated_by   IS 'Кем обновлено';
-COMMENT ON COLUMN comments.version      IS 'Версия новости';
+COMMENT ON COLUMN comments.version      IS 'Версия комментария';
 --rollback DROP TABLE comments;

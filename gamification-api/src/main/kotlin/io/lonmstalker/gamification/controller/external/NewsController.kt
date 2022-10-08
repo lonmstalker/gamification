@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import reactor.core.publisher.Mono
@@ -52,9 +53,18 @@ interface NewsController {
     @DeleteMapping("$NEWS_ENDPOINT/comment/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponse(
-        description = "Добавить или обновить комментарий",
+        description = "Удалить комментарий",
         responseCode = "200",
-        content = [Content(schema = Schema(implementation = CommentDto::class))]
+        content = [Content(schema = Schema(implementation = Boolean::class))]
     )
     fun deleteComment(@PathVariable commentId: String): Mono<Boolean>
+
+    @PutMapping("$NEWS_ENDPOINT/comment/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponse(
+        description = "Лайкнуть комментарий",
+        responseCode = "200",
+        content = [Content(schema = Schema(implementation = Boolean::class))]
+    )
+    fun likeComment(@PathVariable commentId: String): Mono<Boolean>
 }
