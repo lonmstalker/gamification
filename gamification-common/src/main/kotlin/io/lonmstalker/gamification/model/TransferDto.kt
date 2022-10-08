@@ -16,7 +16,8 @@ data class TransferRqDto @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.ANY)
 data class TransferRpDto @JsonCreator constructor(
-    @param:JsonProperty("transaction") val transactionHash: String
+    @param:JsonProperty("transaction_hash") val transactionHash: String?, // nft
+    @param:JsonProperty("transaction") val transaction: String? // ruble
 )
 
 enum class TransferType(val type: String) {

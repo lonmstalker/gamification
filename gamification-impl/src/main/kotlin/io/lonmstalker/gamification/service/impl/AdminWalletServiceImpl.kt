@@ -63,8 +63,8 @@ class AdminWalletServiceImpl(
                     Mono.zip(
                         this.walletRepository.findById(adminId),
                         this.walletRepository.findById(UUID.fromString(rqBody.walletId))
-                    ).flatMap { (wallet, adminWallet) ->
-                        this.walletGateway.getBalance(wallet.publicKey)
+                    ).flatMap { (adminWallet, wallet) ->
+                        this.walletGateway.getBalance(adminWallet.publicKey)
                             .handle<List<Tuple2<TransferRqDto, TransferType>>> { balance, sink ->
                                 val rqList = mutableListOf<Tuple2<TransferRqDto, TransferType>>()
 
@@ -78,12 +78,12 @@ class AdminWalletServiceImpl(
                             }.flatMapMany { rqList ->
                                 val generateNft =
                                     if (rqBody.tokens.isNullOrEmpty()) Flux.empty() else Flux.fromIterable(rqBody.tokens!!)
-                                        .map { this.mapGenerateNftRq(wallet, it, action) }
+                                        .concatMap { this.mapGenerateNftRq(wallet, it, action) }
                                 Flux.mergeSequential(
                                     generateNft,
                                     Flux.fromIterable(rqList).concatMap { this.mapTransferRq(wallet, action, it) }
                                 ).concatMap { it ->
-                                        this.transactionRepository.save(it as TransactionHistory)
+                                        this.transactionRepository.save(it)
                                             .map { this.modelConverter.transactionToDto(it) }
                                     }
                             }.collectList()
@@ -107,7 +107,7 @@ class AdminWalletServiceImpl(
         return this.transferGateway.transfer(tuple.t1, tuple.t2)
             .map { rp ->
                 TransactionHistory(
-                    walletId = wallet.walletId!!, hash = rp.transactionHash, actionId = action.actionId!!
+                    walletId = wallet.walletId!!, hash = rp.transaction!!, actionId = action.actionId!!
                 ).apply {
                     when (tuple.t2) {
                         TransferType.MATIC -> this.matic = rs.amount!!.toDouble()
@@ -124,7 +124,8 @@ class AdminWalletServiceImpl(
         this.nftGateway.generateNft(GenerateBalanceRqDto(wallet.publicKey, generateNftDto.uri, generateNftDto.count))
             .map { rp ->
                 TransactionHistory(
-                    walletId = wallet.walletId!!, hash = rp.transactionHash, actionId = action.actionId!!
+                    walletId = wallet.walletId!!, hash = rp.transactionHash!!,
+                    actionId = action.actionId!!, tokenCount = generateNftDto.count
                 )
             }
 

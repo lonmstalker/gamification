@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono
 import java.util.UUID
 
 object UserUtils {
-    private val id = UUID.fromString("295b5aec-4703-11ed-aea7-0242ac1f0002")
+    private val id = UUID.fromString("1424fe48-4709-11ed-8dd7-0242c0a81002")
 
     fun getCurrentUserId() = Mono.just(id)
 

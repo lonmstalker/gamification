@@ -58,9 +58,9 @@ CREATE TABLE items
 (
     item_id      UUID           DEFAULT uuid_generate_v1()           PRIMARY KEY,
     name         VARCHAR(100)                                        NOT NULL,
-    image_uri    VARCHAR(255)                                        NOT NULL,
+    image_uri    VARCHAR(255)                                        NULL,
     description  VARCHAR(255)                                        NULL,
-    coins        DECIMAL        DEFAULT 0.0                          NOT NULL,
+    coins        DECIMAL(2)     DEFAULT 0.0                          NOT NULL,
     nft          INT            DEFAULT 0                            NOT NULL,
     created_date TIMESTAMP      DEFAULT now()                        NOT NULL,
     created_by   UUID                                                NOT NULL,
@@ -86,8 +86,8 @@ CREATE TABLE actions
     action_id             UUID          DEFAULT uuid_generate_v1()   PRIMARY KEY,
     name                  VARCHAR(100)  UNIQUE                       NOT NULL,
     description           VARCHAR(255)                               NULL,
-    coins                 DECIMAL       DEFAULT 0                    NULL,
-    matic                 DECIMAL       DEFAULT 0                    NULL,
+    coins                 DECIMAL(2)    DEFAULT 0                    NULL,
+    matic                 DECIMAL(2)    DEFAULT 0                    NULL,
     nft                   INT           DEFAULT 0                    NULL,
     role                  VARCHAR(50)                                NULL,
     can_be_changed_reward BOOLEAN       DEFAULT true                 NOT NULL,
@@ -123,9 +123,9 @@ CREATE TABLE transaction_history
     hash                   VARCHAR(100)                                 NOT NULL,
     description            VARCHAR(255)                                 NULL,
     status                 VARCHAR(50)                                  NULL,
-    coins                  DECIMAL        DEFAULT 0                     NULL,
-    matic                  DECIMAL        DEFAULT 0                     NULL,
-    token_id               INT            DEFAULT 0                     NULL,
+    coins                  DECIMAL(2)     DEFAULT 0                     NULL,
+    matic                  DECIMAL(2)     DEFAULT 0                     NULL,
+    token_count            INT            DEFAULT 0                     NULL,
     wallet_id              UUID                                         NOT NULL,
     created_date           TIMESTAMP      DEFAULT now()                 NOT NULL,
     transaction_initiator  UUID                                         NOT NULL
@@ -138,7 +138,7 @@ COMMENT ON COLUMN transaction_history.status                IS 'Статус т�
 COMMENT ON COLUMN transaction_history.description           IS 'Пояснение транзакции, если необходимо';
 COMMENT ON COLUMN transaction_history.coins                 IS 'Сумма в монетах';
 COMMENT ON COLUMN transaction_history.matic                 IS 'Сумма в MATIC';
-COMMENT ON COLUMN transaction_history.token_id              IS 'Id nft токена';
+COMMENT ON COLUMN transaction_history.token_count           IS 'Количество токенов';
 COMMENT ON COLUMN transaction_history.action_id             IS 'Id действия';
 COMMENT ON COLUMN transaction_history.wallet_id             IS 'На кого проведена транзакция';
 COMMENT ON COLUMN transaction_history.created_date          IS 'Дата создания';
@@ -179,6 +179,7 @@ CREATE TABLE news
 (
     news_id      UUID           DEFAULT uuid_generate_v1()           PRIMARY KEY,
     name         VARCHAR(200)                                        NOT NULL,
+    image_uri    VARCHAR(500)                                        NULL,
     text         TEXT                                                NOT NULL,
     open_comm    BOOLEAN        DEFAULT false                        NOT NULL,
     created_date TIMESTAMP      DEFAULT now()                        NOT NULL,
@@ -190,6 +191,7 @@ CREATE TABLE news
 COMMENT ON TABLE  news              IS 'Новость ';
 COMMENT ON COLUMN news.news_id      IS 'Идентификатор новости';
 COMMENT ON COLUMN news.name         IS 'Название новости';
+COMMENT ON COLUMN news.image_uri    IS 'Ссылка на картинку';
 COMMENT ON COLUMN news.text         IS 'Текст новости';
 COMMENT ON COLUMN news.open_comm    IS 'Комментарии открыты';
 COMMENT ON COLUMN news.created_date IS 'Дата создания';

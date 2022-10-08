@@ -22,8 +22,7 @@ import reactor.core.publisher.Mono
  */
 @Component
 class WalletGatewayImpl(
-    private val walletClient: WalletClient,
-    private val objectMapper: ObjectMapper
+    private val walletClient: WalletClient
 ) : WalletGateway {
 
     override fun createWallet(): Mono<WalletRpDto> = this.walletClient.createWallet()

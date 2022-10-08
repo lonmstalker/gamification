@@ -22,6 +22,9 @@ data class News (
     @field:Column("open_comm")
     val openComments: Boolean,
 
+    @field:Column("image_uri")
+    val imageUri: String? = null,
+
     @field:CreatedDate
     @field:Column("created_date")
     val createdDate: LocalDateTime?,

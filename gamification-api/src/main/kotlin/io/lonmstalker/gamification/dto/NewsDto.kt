@@ -24,6 +24,9 @@ data class NewsDto(
     @field:Schema(description = "Открыты ли комментарии")
     val openComments: Boolean = true,
 
+    @field:Schema(description = "Ссылка на картинку")
+    val imageUri: String? = null,
+
     @JsonView(Views.Admin::class)
     @field:Schema(description = "Когда создано")
     val createdDate: LocalDateTime?,

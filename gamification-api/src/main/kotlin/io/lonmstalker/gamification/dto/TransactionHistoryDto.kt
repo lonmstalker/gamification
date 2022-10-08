@@ -35,8 +35,8 @@ data class TransactionHistoryDto @JsonCreator constructor(
     @field:Schema(description = "Награда в MATIC")
     val matic: Double?,
 
-    @field:Schema(description = "Id пользователя, на кого выполнена транзакция")
-    val userId: UUID,
+    @field:Schema(description = "Id кошелька, на который выполнена транзакция")
+    val walletId: UUID,
 
     @field:Schema(description = "Id инициатора транзакции")
     val transactionInitiator: UUID?,

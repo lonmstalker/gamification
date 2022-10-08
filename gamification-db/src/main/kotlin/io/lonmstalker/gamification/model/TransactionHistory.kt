@@ -24,8 +24,8 @@ data class TransactionHistory constructor(
     @field:Column("matic")
     var matic: Double? = null,
 
-    @field:Column("token_id")
-    var tokenId: Int? = null,
+    @field:Column("token_count")
+    var tokenCount: Int? = null,
 
     @field:Column("status")
     val status: String? = null,

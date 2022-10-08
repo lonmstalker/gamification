@@ -70,7 +70,7 @@ class WalletServiceImpl(
             .map { it.toPage(pageRq) }
 
     override fun getOne(walletId: UUID): Mono<WalletDto> = this.walletRepository.findById(walletId)
-        .map { this.modelConverter.walletToDto(it) }
+        .flatMap { wallet -> this.fillRpBalance(wallet) }
 
     private fun fillRpBalance(wallet: Wallet) = this.getBalance(wallet.publicKey)
         .map {
