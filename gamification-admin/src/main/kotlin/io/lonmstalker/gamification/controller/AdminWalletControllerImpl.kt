@@ -11,7 +11,8 @@ import reactor.core.publisher.Mono
 
 @RestController
 class AdminWalletControllerImpl : AdminWalletController {
-    override fun reward(operationId: String, walletId: String): Mono<WalletDto> {
+
+    override fun reward(actionId: String, walletId: String): Mono<WalletDto> {
         TODO("Not yet implemented")
     }
 

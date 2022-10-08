@@ -29,6 +29,9 @@ data class ActionDto @JsonCreator constructor(
     @field:Schema(description = "Награда в монетах")
     val coins: Double?,
 
+    @field:Schema(description = "Награда в MATIC")
+    val matic: Double?,
+
     @field:Schema(description = "Награда в nft")
     val nft: Int?,
 

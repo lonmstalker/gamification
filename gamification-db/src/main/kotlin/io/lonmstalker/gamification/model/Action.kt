@@ -25,6 +25,9 @@ data class Action(
     @field:Column("coins")
     val coins: Double?,
 
+    @field:Column("matic")
+    val matic: Double?,
+
     @field:Column("nft")
     val nft: Int?,
 

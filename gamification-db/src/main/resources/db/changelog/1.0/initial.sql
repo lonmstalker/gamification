@@ -93,10 +93,11 @@ CREATE TABLE actions
     name                  VARCHAR(100)                               NOT NULL,
     description           VARCHAR(255)                               NULL,
     coins                 DECIMAL       DEFAULT 0                    NULL,
+    matic                 DECIMAL       DEFAULT 0                    NULL,
     nft                   INT           DEFAULT 0                    NULL,
     role                  VARCHAR(50)                                NULL,
     can_be_changed_reward BOOLEAN       DEFAULT true                 NOT NULL,
-    one_time              BOOLEAN       DEFAULT false                NOT NULL,
+    visible               BOOLEAN       DEFAULT true                 NOT NULL,
     operation_type        VARCHAR(50)                                NOT NULL,
     created_date          TIMESTAMP     DEFAULT now()                NOT NULL,
     created_by            UUID                                       NOT NULL,
@@ -108,9 +109,10 @@ COMMENT ON COLUMN actions.action_id               IS 'Идентификатор
 COMMENT ON COLUMN actions.name                    IS 'Название операции';
 COMMENT ON COLUMN actions.description             IS 'Описание операции';
 COMMENT ON COLUMN actions.coins                   IS 'Сумма операции в монетах';
+COMMENT ON COLUMN actions.matic                   IS 'Сумма операции в MATIC';
 COMMENT ON COLUMN actions.nft                     IS 'Сумма операции в сертификатах';
 COMMENT ON COLUMN actions.role                    IS 'Необходимая роль для операции';
-COMMENT ON COLUMN actions.one_time                IS 'Флаг для одноразовых операций';
+COMMENT ON COLUMN actions.visible                 IS 'Флаг для операций, невидимых пользователю';
 COMMENT ON COLUMN actions.can_be_changed_reward   IS 'Возможность менять награду при награждении';
 COMMENT ON COLUMN actions.created_date            IS 'Дата создания';
 COMMENT ON COLUMN actions.created_by              IS 'Кем создано';
@@ -126,6 +128,7 @@ CREATE TABLE transaction_history
     hash                   VARCHAR(100)                                 NOT NULL,
     description            VARCHAR(255)                                 NULL,
     coins                  DECIMAL        DEFAULT 0                     NULL,
+    matic                  DECIMAL        DEFAULT 0                     NULL,
     nft                    INT            DEFAULT 0                     NULL,
     user_id                INT            DEFAULT 0                     NOT NULL,
     created_date           TIMESTAMP      DEFAULT now()                 NOT NULL,
@@ -137,6 +140,7 @@ COMMENT ON COLUMN transaction_history.item_id               IS 'В случае 
 COMMENT ON COLUMN transaction_history.hash                  IS 'Хеш транзакции в блокчейне';
 COMMENT ON COLUMN transaction_history.description           IS 'Пояснение транзакции, если необходимо';
 COMMENT ON COLUMN transaction_history.coins                 IS 'Сумма в монетах';
+COMMENT ON COLUMN transaction_history.matic                 IS 'Сумма в MATIC';
 COMMENT ON COLUMN transaction_history.nft                   IS 'Сумма в nft';
 COMMENT ON COLUMN transaction_history.user_id               IS 'На кого проведена транзакция';
 COMMENT ON COLUMN transaction_history.created_date          IS 'Дата создания';
