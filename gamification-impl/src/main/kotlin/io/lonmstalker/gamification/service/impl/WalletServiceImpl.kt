@@ -33,11 +33,13 @@ class WalletServiceImpl(
                         this.walletRepository.save(
                             Wallet(
                                 walletId = user.userId,
-                                userRole = Role.USER.name,
+                                userRole = user.authorities.firstOrNull()?.authority ?: Role.USER.name,
                                 privateKey = it.privateKey,
                                 publicKey = it.publicKey,
                                 firstName = user.firstName,
-                                lastName = user.lastName
+                                lastName = user.lastName,
+                                phoneNumber = user.phone,
+                                email = user.email,
                             )
                         )
                     }

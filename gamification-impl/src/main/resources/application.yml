@@ -22,6 +22,11 @@ spring:
     leak-detection: paranoid
   webflux:
     base-path: /game
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${KEYCLOAK_REALM_CERT_URL:http://localhost:8484/auth}/realms/my_realm/protocol/openid-connect/certs
 
 app:
   blockchainApiUrl: ${BLOCKCHAIN_URL:https://hackathon.lsp.team/hk}
