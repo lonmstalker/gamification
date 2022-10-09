@@ -28,11 +28,43 @@ services:
     volumes:
       - keycloak:/data/keycloak
     ports:
-      - 8082:8080
+      - "8082:8080"
     depends_on:
       - postgres
     links:
       - "postgres:postgres"
+
+  game:
+     build:
+       context: ..
+       dockerfile: gamification-impl/Dockerfile
+     container_name: game
+     restart: on-failure
+     environment:
+       POSTGRES_USERNAME: game
+       POSTGRES_PASSWORD: game
+       KEYCLOAK_REALM_CERT_URL: http://localhost:8082/auth
+       BLOCKCHAIN_URL: https://hackathon.lsp.team/hk
+     ports:
+       - "8082:8080"
+     depends_on:
+       - postgres
+
+  auth:
+    build:
+      context: ..
+      dockerfile: gamification-auth/Dockerfile
+    container_name: auth
+    restart: on-failure
+    environment:
+      POSTGRES_USERNAME: auth
+      POSTGRES_PASSWORD: auth
+      AUTH_URL: http://localhost:8082/auth
+    ports:
+      - "8084:8080"
+    depends_on:
+      - postgres
+      - keycloak
 
 volumes:
   keycloak:

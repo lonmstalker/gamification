@@ -26,7 +26,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${KEYCLOAK_REALM_CERT_URL:http://localhost:8484/auth}/realms/my_realm/protocol/openid-connect/certs
+          jwk-set-uri: ${KEYCLOAK_REALM_CERT_URL:http://localhost:8082/auth}/realms/my_realm/protocol/openid-connect/certs
 
 app:
   blockchainApiUrl: ${BLOCKCHAIN_URL:https://hackathon.lsp.team/hk}
@@ -52,4 +52,4 @@ springdoc:
 logging:
   level:
     io.lonmstalker: DEBUG
-    root: ERROR
+    root: DEBUG
