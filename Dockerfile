@@ -20,7 +20,11 @@ ENV JAVA_HOME /usr/lib/jvm/default-jvm/
 WORKDIR /data
 CMD ["mvn", "--version"]
 
-ADD . /
+ADD pom.xml ./pom.xml
+ADD /gamification-api ./gamification-api
+ADD /gamification-db ./gamification-db
+ADD /gamification-common ./gamification-common
+ADD /gamification-impl ./gamification-impl
 
 RUN mvn clean package spring-boot:repackage
 
@@ -28,4 +32,4 @@ EXPOSE 8080
 
 RUN echo "START RUN JAR"
 
-ENTRYPOINT ["java", "-jar", "target/gamification-auth.jar"]
+ENTRYPOINT ["java", "-jar", "gamification-impl/target/gamification.jar"]

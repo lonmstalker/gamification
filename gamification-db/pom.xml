@@ -12,6 +12,10 @@
     <artifactId>gamification-db</artifactId>
     <version>${project.parent.version}</version>
 
+    <properties>
+        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.postgresql</groupId>
